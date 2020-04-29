@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1068364253022",
+    "firebase_url": "https://base-camp-f94ca.firebaseio.com",
+    "project_id": "base-camp-f94ca",
+    "storage_bucket": "base-camp-f94ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068364253022:android:7ddae52f1a2dea4136b1cf",
+        "android_client_info": {
+          "package_name": "com.basecamp.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068364253022-docbc9kmi93sampss7r4umsmjkrgkkov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfKZHfifZ-0TAv_xivGxcByMUylJ4gnzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068364253022-docbc9kmi93sampss7r4umsmjkrgkkov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
