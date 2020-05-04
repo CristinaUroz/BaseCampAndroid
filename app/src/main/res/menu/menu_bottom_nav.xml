@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/profile_screen"
+        android:icon="@drawable/profile"
+        android:orderInCategory="1"
+        android:title="@string/profile"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+
+    <item
+        android:id="@+id/feed_screen"
+        android:icon="@drawable/feed"
+        android:orderInCategory="2"
+        android:title="@string/feed"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/info_screen"
+        android:icon="@drawable/info"
+        android:orderInCategory="3"
+        android:title="@string/info"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+</menu>

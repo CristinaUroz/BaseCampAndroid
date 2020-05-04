@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="feed">@drawable/feed_selector</drawable>
+    <drawable name="profile">@drawable/profile_selector</drawable>
+    <drawable name="info">@drawable/info_selector</drawable>
+
+    <drawable name="feed_active">@android:drawable/ic_media_play</drawable>
+    <drawable name="profile_active">@android:drawable/ic_media_previous</drawable>
+    <drawable name="info_active">@android:drawable/ic_media_rew</drawable>
+
+    <drawable name="feed_inactive">@android:drawable/ic_media_pause</drawable>
+    <drawable name="profile_inactive">@android:drawable/ic_media_next</drawable>
+    <drawable name="info_inactive">@android:drawable/ic_media_ff</drawable>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signup_screen">
+
+    <fragment
+        android:id="@+id/screen_signup_login_button"
+        android:name="com.basecamp.android.core.auth.login.LogInScreen"
+        android:label="login_screen"
+        tools:layout="@layout/screen_login">
+        <action
+            android:id="@+id/action_login_screen_to_forgotpassword_screen"
+            app:destination="@id/forgotpassword_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signup_screen"
+        android:name="com.basecamp.android.core.auth.signup.SignUpScreen"
+        android:label="signup_screen"
+        tools:layout="@layout/screen_signup">
+        <action
+            android:id="@+id/action_signup_screen_to_login_screen"
+            app:destination="@id/screen_signup_login_button" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotpassword_screen"
+        android:name="com.basecamp.android.core.auth.forgotpassword.ForgotPasswordScreen"
+        android:label="forgotpassword_screen"
+        tools:layout="@layout/screen_forgotpassword">
+    </fragment>
+
+</navigation>

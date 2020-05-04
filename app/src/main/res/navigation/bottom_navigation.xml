@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/feed_screen">
+
+    <fragment
+        android:id="@+id/feed_screen"
+        android:name="com.basecamp.android.core.main.feed.FeedScreen"
+        android:label="feed_screen"
+        tools:layout="@layout/screen_feed"/>
+
+    <fragment
+        android:id="@+id/profile_screen"
+        android:name="com.basecamp.android.core.main.profile.ProfileScreen"
+        android:label="profile_screen"
+        tools:layout="@layout/screen_profile"/>
+
+    <fragment
+        android:id="@+id/info_screen"
+        android:name="com.basecamp.android.core.main.info.InfoScreen"
+        android:label="info_screen"
+        tools:layout="@layout/screen_info"/>
+
+</navigation>
