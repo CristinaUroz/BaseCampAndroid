@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="feed">@drawable/feed_selector</drawable>
+    <drawable name="profile">@drawable/profile_selector</drawable>
+    <drawable name="info">@drawable/info_selector</drawable>
+
+    <drawable name="feed_active">@android:drawable/ic_lock_idle_lock</drawable>
+    <drawable name="profile_active">@android:drawable/ic_lock_idle_alarm</drawable>
+    <drawable name="info_active">@android:drawable/ic_lock_idle_charging</drawable>
+
+    <drawable name="feed_inactive">@android:drawable/ic_lock_lock</drawable>
+    <drawable name="profile_inactive">@android:drawable/ic_lock_silent_mode_off</drawable>
+    <drawable name="info_inactive">@android:drawable/ic_lock_silent_mode</drawable>
+
+</resources>

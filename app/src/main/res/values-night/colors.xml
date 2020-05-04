@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#440000</color>
+    <color name="colorPrimaryDark">#AA0000</color>
+    <color name="colorAccent">#FFCC80</color>
+    <color name="navigationTabsBackground">#202020</color>
+    <color name="fragmentBackground">#000000</color>
+    <color name="textColor">#FFFFFF</color>
+</resources>
