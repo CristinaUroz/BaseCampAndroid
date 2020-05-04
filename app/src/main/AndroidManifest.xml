@@ -37,6 +37,10 @@
             android:name=".core.auth.AuthContainer"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".core.welcome.WelcomeContainer"
+            android:windowSoftInputMode="adjustResize" />
+
         <service
             android:name="com.basecamp.android.core.common.BaseCampMessagingService"
             android:exported="false">

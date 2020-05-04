@@ -8,6 +8,8 @@ interface InfoContract {
 
     interface Router : BaseContract.Router
 
-    interface Presenter : BaseContract.Presenter
+    interface Presenter : BaseContract.Presenter {
+        fun onEnterDarkModeClick()
+    }
 
 }

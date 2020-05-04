@@ -5,7 +5,16 @@
     android:id="@+id/container_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA">
+    android:background="@color/fragmentBackground">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/enable_dark_mode"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/main_navigation_host_fragment"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/main_container_content"
@@ -29,7 +38,7 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightBackground"
+        android:background="@color/navigationTabsBackground"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
         app:labelVisibilityMode="selected"

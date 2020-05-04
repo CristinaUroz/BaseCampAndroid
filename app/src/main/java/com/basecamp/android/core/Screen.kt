@@ -13,7 +13,6 @@ import com.basecamp.android.shared.extensions.isAssignableFrom
 import com.basecamp.android.shared.extensions.newInstance
 import kotlin.reflect.KClass
 
-
 abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, BaseContract.Router {
 
     var result: ((Bundle) -> Unit)? = null

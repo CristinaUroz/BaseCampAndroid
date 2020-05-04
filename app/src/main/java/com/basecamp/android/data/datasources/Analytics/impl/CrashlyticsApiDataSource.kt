@@ -1,4 +1,4 @@
-package com.basecamp.android.data.datasources.impl
+package com.basecamp.android.data.datasources.Analytics.impl
 
 import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope

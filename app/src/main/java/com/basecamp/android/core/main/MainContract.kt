@@ -1,12 +1,19 @@
 package com.basecamp.android.core.main
 
+import android.os.Bundle
 import com.basecamp.android.core.BaseContract
 
 interface MainContract {
 
-    interface View : BaseContract.View
+    interface View : BaseContract.View {
+        fun showFloatingButton(b: Boolean)
+    }
 
-    interface Router : BaseContract.Router
+    interface Router : BaseContract.Router {
+        fun goToWelcome(bundle: Bundle)
+    }
 
-    interface Presenter : BaseContract.Presenter
+    interface Presenter : BaseContract.Presenter {
+        fun onDarkModeClick()
+    }
 }
