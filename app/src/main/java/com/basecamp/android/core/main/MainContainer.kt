@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.basecamp.android.R
 import com.basecamp.android.core.Container
+import com.basecamp.android.core.splash.SplashContainer
 import com.basecamp.android.core.welcome.WelcomeContainer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.container_main.*
@@ -38,6 +39,12 @@ class MainContainer : Container<MainPresenter>(), MainContract.View, MainContrac
 
     override fun goToWelcome(bundle: Bundle) {
         val caller = Intent(this, WelcomeContainer::class.java)
+        caller.putExtras(bundle)
+        startActivity(caller)
+        finish()
+    }
+    override fun goToSplash(bundle: Bundle) {
+        val caller = Intent(this, SplashContainer::class.java)
         caller.putExtras(bundle)
         startActivity(caller)
         finish()

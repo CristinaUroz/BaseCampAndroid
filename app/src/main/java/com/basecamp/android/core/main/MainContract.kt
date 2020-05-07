@@ -11,6 +11,7 @@ interface MainContract {
 
     interface Router : BaseContract.Router {
         fun goToWelcome(bundle: Bundle)
+        fun goToSplash(bundle: Bundle)
     }
 
     interface Presenter : BaseContract.Presenter {

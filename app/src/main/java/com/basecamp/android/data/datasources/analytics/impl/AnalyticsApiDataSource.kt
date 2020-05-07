@@ -1,4 +1,4 @@
-package com.basecamp.android.data.datasources.Analytics.impl
+package com.basecamp.android.data.datasources.analytics.impl
 
 import android.content.Context
 import android.os.Bundle

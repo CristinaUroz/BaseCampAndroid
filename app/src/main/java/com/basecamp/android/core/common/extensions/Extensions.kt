@@ -1,4 +1,4 @@
-package com.basecamp.android.core.common
+package com.basecamp.android.core.common.extensions
 
 import android.content.Context
 import androidx.fragment.app.Fragment

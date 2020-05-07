@@ -8,5 +8,7 @@ interface ProfileContract {
 
     interface Router : BaseContract.Router
 
-    interface Presenter : BaseContract.Presenter
+    interface Presenter : BaseContract.Presenter {
+        fun onLogOutClick()
+    }
 }

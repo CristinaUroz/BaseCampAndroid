@@ -4,10 +4,15 @@ import com.basecamp.android.core.BaseContract
 
 interface ForgotPasswordContract {
 
-    interface View : BaseContract.View
+    interface View : BaseContract.View {
+        fun setError(error: String? = null)
+        fun onEmailSent(email: String)
+    }
 
     interface Router : BaseContract.Router
 
-    interface Presenter : BaseContract.Presenter
+    interface Presenter : BaseContract.Presenter {
+        fun onForgotPasswordClick(email: String)
+    }
 
 }

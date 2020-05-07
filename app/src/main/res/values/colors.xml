@@ -3,7 +3,10 @@
     <color name="colorPrimary">#AED581</color>
     <color name="colorPrimaryDark">#558B2F</color>
     <color name="colorAccent">#FFCC80</color>
-    <color name="navigationTabsBackground">#F0F0F0</color>
+    <color name="navigationTabsBackground">#c0c0c0</color>
+    <color name="disabledBackground">#A0A0A0</color>
     <color name="fragmentBackground">#FFFFFF</color>
     <color name="textColor">#000000</color>
+    <color name="errorColor">#cc3333</color>
+    <color name="presedErrorColor">#550000</color>
 </resources>

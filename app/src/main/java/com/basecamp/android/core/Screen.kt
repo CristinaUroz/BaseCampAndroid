@@ -1,7 +1,6 @@
 package com.basecamp.android.core
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -126,11 +125,6 @@ abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, Base
                 result = onResult
             }
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_container_content, screen, clazz.simpleName)?.addToBackStack(clazz.simpleName)?.commit()
-    }
-
-
-    override fun getContext(): Context {
-        return super.requireContext()
     }
 
     fun <V : View> findViewById(id: Int): V {

@@ -6,7 +6,7 @@ import android.widget.ImageView
 import com.basecamp.android.R
 import com.basecamp.android.core.Container
 import com.basecamp.android.core.auth.AuthContainer
-import com.basecamp.android.core.common.BCGlide
+import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.main.MainContainer
 import kotlin.reflect.KClass
 

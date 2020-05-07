@@ -12,4 +12,6 @@
     <drawable name="profile_inactive">@android:drawable/ic_media_next</drawable>
     <drawable name="info_inactive">@android:drawable/ic_media_ff</drawable>
 
+    <drawable name="go_back">@drawable/ic_go_back</drawable>
+
 </resources>

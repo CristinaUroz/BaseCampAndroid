@@ -38,8 +38,7 @@ dependencies {
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$test_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_core"
-    implementation "com.google.firebase:firebase-analytics:$firebase_analytics"
-    implementation "com.google.firebase:firebase-auth:$firebase_auth"
+
     implementation "cc.popkorn:popkorn:$popkorn_version"
     kapt "cc.popkorn:popkorn-compiler:$popkorn_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
@@ -49,6 +48,8 @@ dependencies {
 
     //Firebase.
     implementation "com.google.firebase:firebase-analytics:$firebase_analytics"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth"
+    implementation "com.google.firebase:firebase-firestore:$firebase_firestore"
     implementation "com.google.firebase:firebase-crashlytics:$firebase_crashlytics"
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging"
 
