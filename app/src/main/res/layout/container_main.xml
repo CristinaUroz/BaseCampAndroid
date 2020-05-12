@@ -7,13 +7,17 @@
     android:layout_height="match_parent"
     android:background="@color/fragmentBackground">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/enable_dark_mode"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/main_navigation_host_fragment"
+        android:src="@drawable/change_secret"
+        android:elevation="4dp"
+        android:background="@drawable/gray_button_background"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout

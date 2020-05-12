@@ -4,12 +4,14 @@
     <drawable name="profile">@drawable/profile_selector</drawable>
     <drawable name="info">@drawable/info_selector</drawable>
 
-    <drawable name="feed_active">@android:drawable/ic_lock_idle_lock</drawable>
-    <drawable name="profile_active">@android:drawable/ic_lock_idle_alarm</drawable>
-    <drawable name="info_active">@android:drawable/ic_lock_idle_charging</drawable>
+    <drawable name="feed_active">@drawable/ic_top_secret_active</drawable>
+    <drawable name="profile_active">@drawable/ic_hacker_profile_active</drawable>
+    <drawable name="info_active">@drawable/ic_team_active</drawable>
 
-    <drawable name="feed_inactive">@android:drawable/ic_lock_lock</drawable>
-    <drawable name="profile_inactive">@android:drawable/ic_lock_silent_mode_off</drawable>
-    <drawable name="info_inactive">@android:drawable/ic_lock_silent_mode</drawable>
+    <drawable name="feed_inactive">@drawable/ic_top_secret_inactive</drawable>
+    <drawable name="profile_inactive">@drawable/ic_hacker_profile_inactive</drawable>
+    <drawable name="info_inactive">@drawable/ic_team_inactive</drawable>
+
+    <drawable name="change_secret">@drawable/ic_mask_active</drawable>
 
 </resources>

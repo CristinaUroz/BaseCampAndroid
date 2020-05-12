@@ -10,7 +10,8 @@ import com.basecamp.android.core.main.actions.GoToWelcomeContainerAction
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 
 @Injectable(Scope.BY_NEW)
-class MainPresenter(private val settingsPreferences: SettingsPreferences) : Presenter<MainContract.View, MainContract.Router>(), MainContract.Presenter, GoToWelcomeContainerAction, GoToSplashContainerAction {
+class MainPresenter(private val settingsPreferences: SettingsPreferences) : Presenter<MainContract.View, MainContract.Router>(), MainContract.Presenter, GoToWelcomeContainerAction,
+    GoToSplashContainerAction {
 
     override fun getPageName(): String = "Main"
 
@@ -19,10 +20,10 @@ class MainPresenter(private val settingsPreferences: SettingsPreferences) : Pres
     }
 
     override fun onDarkModeClick() {
-        if (settingsPreferences.getDarkMode()){
+        if (settingsPreferences.getDarkMode() && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             settingsPreferences.setDarkMode(false)
-        } else {
+        } else if (!settingsPreferences.getDarkMode() && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             settingsPreferences.setDarkMode(true)
         }

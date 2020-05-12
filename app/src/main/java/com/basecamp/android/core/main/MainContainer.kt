@@ -2,20 +2,23 @@ package com.basecamp.android.core.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import cc.popkorn.inject
 import com.basecamp.android.R
 import com.basecamp.android.core.Container
 import com.basecamp.android.core.splash.SplashContainer
 import com.basecamp.android.core.welcome.WelcomeContainer
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 import kotlinx.android.synthetic.main.container_main.*
 import kotlin.reflect.KClass
 
 class MainContainer : Container<MainPresenter>(), MainContract.View, MainContract.Router {
 
-    private val darkModeButton by lazy { findViewById<FloatingActionButton>(R.id.enable_dark_mode) }
-
+    private val darkModeButton by lazy { findViewById<ImageView>(R.id.enable_dark_mode) }
+    private val settingsPreferences = inject<SettingsPreferences>()
     override fun getLayout(): Int = R.layout.container_main
 
     override fun getPresenter(): KClass<MainPresenter> = MainPresenter::class
@@ -33,8 +36,7 @@ class MainContainer : Container<MainPresenter>(), MainContract.View, MainContrac
     }
 
     override fun showFloatingButton(b: Boolean) {
-        if (b) darkModeButton.show()
-        else darkModeButton.hide()
+        if (b) darkModeButton.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     override fun goToWelcome(bundle: Bundle) {

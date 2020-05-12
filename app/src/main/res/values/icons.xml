@@ -4,14 +4,16 @@
     <drawable name="profile">@drawable/profile_selector</drawable>
     <drawable name="info">@drawable/info_selector</drawable>
 
-    <drawable name="feed_active">@android:drawable/ic_media_play</drawable>
-    <drawable name="profile_active">@android:drawable/ic_media_previous</drawable>
-    <drawable name="info_active">@android:drawable/ic_media_rew</drawable>
+    <drawable name="feed_active">@drawable/ic_news_active</drawable>
+    <drawable name="profile_active">@drawable/ic_profile_active</drawable>
+    <drawable name="info_active">@drawable/ic_info_active</drawable>
 
-    <drawable name="feed_inactive">@android:drawable/ic_media_pause</drawable>
-    <drawable name="profile_inactive">@android:drawable/ic_media_next</drawable>
-    <drawable name="info_inactive">@android:drawable/ic_media_ff</drawable>
+    <drawable name="feed_inactive">@drawable/ic_news_inactive</drawable>
+    <drawable name="profile_inactive">@drawable/ic_profile_inactive</drawable>
+    <drawable name="info_inactive">@drawable/ic_info_inactive</drawable>
 
     <drawable name="go_back">@drawable/ic_go_back</drawable>
+    <drawable name="change_secret">@drawable/ic_mask_inactive</drawable>
+    <drawable name="hacker">@drawable/ic_hacker</drawable>
 
 </resources>
