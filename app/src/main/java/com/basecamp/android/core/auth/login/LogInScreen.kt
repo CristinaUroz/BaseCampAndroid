@@ -1,6 +1,8 @@
 package com.basecamp.android.core.auth.login
 
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.basecamp.android.R
 import com.basecamp.android.core.Screen
@@ -16,6 +18,7 @@ class LogInScreen : Screen<LogInPresenter>(), LogInContract.View, LogInContract.
     private val forgotPasswordButton by lazy { findViewById<TextView>(R.id.screen_login_forgot_password_text) }
     private val errorTextView by lazy { findViewById<TextView>(R.id.screen_login_error_text) }
     private val logInButton by lazy { findViewById<Button>(R.id.screen_login_login_button_button) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.screen_login_progress_bar) }
 
     var onForgotPasswordClick: () -> Unit = {}
 
@@ -27,6 +30,7 @@ class LogInScreen : Screen<LogInPresenter>(), LogInContract.View, LogInContract.
         forgotPasswordButton.setOnClickListener { onForgotPasswordClick.invoke() }
         signUpButton.setOnClickListener { closeFragment() }
         logInButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             if (checkFields()) {
                 notify { onLogInClick(emailField.text.toString(), passwordField.text.toString()) }
             }
@@ -34,6 +38,7 @@ class LogInScreen : Screen<LogInPresenter>(), LogInContract.View, LogInContract.
     }
 
     override fun setError(error: String?) {
+        progressBar.visibility = View.GONE
         errorTextView.text = error ?: context?.getString(R.string.something_went_wrong)
     }
 

@@ -1,6 +1,8 @@
 package com.basecamp.android.core.auth.signup
 
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.basecamp.android.R
 import com.basecamp.android.core.Screen
@@ -16,6 +18,7 @@ class SignUpScreen : Screen<SignUpPresenter>(), SignUpContract.View, SignUpContr
     private val repeatPasswordField by lazy { findViewById<TextInputEditText>(R.id.screen_signup_password_repeat_field) }
     private val errorTextView by lazy { findViewById<TextView>(R.id.screen_signup_error_text) }
     private val signUpButton by lazy { findViewById<Button>(R.id.screen_signup_signup_button) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.screen_signup_progress_bar) }
 
     private val emailRegex = Regex("^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\$")
 
@@ -30,6 +33,7 @@ class SignUpScreen : Screen<SignUpPresenter>(), SignUpContract.View, SignUpContr
             onLogInClick.invoke()
         }
         signUpButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             if (checkFields()) {
                 notify { onSignUpClick(nameField.text.toString(), emailField.text.toString(), passwordField.text.toString()) }
             }
@@ -47,6 +51,7 @@ class SignUpScreen : Screen<SignUpPresenter>(), SignUpContract.View, SignUpContr
     }
 
     override fun setError(error: String?) {
+        progressBar.visibility = View.GONE
         errorTextView.text = error ?: context?.getString(R.string.something_went_wrong)
     }
 

@@ -1,9 +1,7 @@
 package com.basecamp.android.core.auth.forgotpassword
 
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import com.basecamp.android.R
 import com.basecamp.android.core.Screen
 import com.basecamp.android.core.common.extensions.closeFragment
@@ -17,6 +15,7 @@ class ForgotPasswordScreen : Screen<ForgotPasswordPresenter>(), ForgotPasswordCo
     private val emailField by lazy { findViewById<TextInputEditText>(R.id.screen_forgopassword_email_field) }
     private val errorTextView by lazy { findViewById<TextView>(R.id.screen_login_error_text) }
     private val sendEmailButton by lazy { findViewById<Button>(R.id.screen_forgopassword_button) }
+    private val progressBar by lazy { findViewById<ProgressBar>(R.id.screen_forgopassword_progress_bar) }
 
 
     override fun getLayout(): Int = R.layout.screen_forgotpassword
@@ -26,8 +25,10 @@ class ForgotPasswordScreen : Screen<ForgotPasswordPresenter>(), ForgotPasswordCo
     override fun init() {
         close.setOnClickListener { closeFragment() }
         sendEmailButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             emailField.text.toString().let {
                 if (it.isEmpty()) {
+                    progressBar.visibility = View.GONE
                     setError(context?.getString(R.string.incorrect_mail))
                 } else {
                     notify {

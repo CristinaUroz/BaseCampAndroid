@@ -2,18 +2,10 @@ package com.basecamp.android.data.repositories.datasources
 
 import com.basecamp.android.data.datasources.DataSource
 import com.basecamp.android.data.datasources.ResponseState
-import com.google.firebase.auth.AuthResult
+import com.basecamp.android.domain.models.User
 
-interface DDBBDataSource : DataSource {
+interface DDBBDataSource: DataSource {
 
-    suspend fun forgotPassword(email: String): ResponseState<Void?>
-
-    suspend fun logIn(email: String, password: String): ResponseState<AuthResult?>
-
-    suspend fun signUp(email: String, password: String): ResponseState<AuthResult?>
-
-    suspend fun logOut()
-
-    suspend fun getCurrentUserMail(): String?
+    suspend fun createUser (id: String, user: User): ResponseState<String>
 
 }

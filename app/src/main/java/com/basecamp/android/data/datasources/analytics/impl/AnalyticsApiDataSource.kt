@@ -41,7 +41,7 @@ class AnalyticsApiDataSource(context: Context) : AnalyticsDataSource {
     override fun trackLogin() {
         try {
             val bundle = Bundle()
-            bundle.putString(FirebaseAnalytics.Param.METHOD, "pinroute")
+            bundle.putString(FirebaseAnalytics.Param.METHOD, "basecamp")
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
         } catch (e: Exception) {
         }
@@ -50,7 +50,7 @@ class AnalyticsApiDataSource(context: Context) : AnalyticsDataSource {
     override fun trackRegister() {
         try {
             val bundle = Bundle()
-            bundle.putString(FirebaseAnalytics.Param.METHOD, "pinroute")
+            bundle.putString(FirebaseAnalytics.Param.METHOD, "basecamp")
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
         } catch (e: Exception) {
         }

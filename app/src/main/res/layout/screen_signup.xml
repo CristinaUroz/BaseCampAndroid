@@ -37,11 +37,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
-                    android:text="@string/sign_up"
-                    app:showAsAction="always"
-                    android:enabled="false"
-                    android:textColor="@color/textColor"
                     android:background="@drawable/gray_button_background"
+                    android:enabled="false"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/textColor"
+                    app:showAsAction="always"
                     tools:ignore="AlwaysShowAction" />
 
                 <Button
@@ -50,9 +50,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
+                    android:background="@drawable/gray_button_background"
                     android:text="@string/log_in"
                     android:textColor="@color/textColor"
-                    android:background="@drawable/gray_button_background"
                     android:transitionName="@+id/screen_signup_login_button"
                     app:showAsAction="always"
                     tools:ignore="AlwaysShowAction" />
@@ -141,18 +141,40 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/errorColor"/>
+                android:textColor="@color/errorColor" />
 
-            <Button
-                android:id="@+id/screen_signup_signup_button"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
-                android:text="@string/sign_up"
-                app:showAsAction="always"
-                android:background="@drawable/button_background"
-                tools:ignore="AlwaysShowAction" />
+                android:layout_marginTop="24dp">
+
+
+                <Button
+                    android:id="@+id/screen_signup_signup_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_background"
+                    android:text="@string/sign_up"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:showAsAction="always"
+                    tools:ignore="AlwaysShowAction" />
+
+                <ProgressBar
+                    android:id="@+id/screen_signup_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/screen_signup_signup_button"
+                    app:layout_constraintEnd_toEndOf="@+id/screen_signup_signup_button"
+                    app:layout_constraintStart_toStartOf="@+id/screen_signup_signup_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>

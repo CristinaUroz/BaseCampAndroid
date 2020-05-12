@@ -23,7 +23,7 @@ class SignUpPresenter(private val signUpUseCase: SignUpUseCase) : Presenter<Sign
     override fun onSignUpClick(name: String, email: String, password: String) {
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
-                when (val response = signUpUseCase.signUp(email, password)) {
+                when (val response = signUpUseCase.signUp(name, email, password)) {
                     is ResponseState.Success -> goToMainContainer(Bundle())
                     is ResponseState.Failure -> draw { setError(response.ex.localizedMessage) }
                     else -> draw { setError() }
