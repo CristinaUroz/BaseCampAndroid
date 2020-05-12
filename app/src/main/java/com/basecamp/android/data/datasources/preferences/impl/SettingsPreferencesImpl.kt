@@ -12,7 +12,12 @@ internal class SettingsPreferencesImpl(ctx: Context) : Preferences(ctx, "Setting
     companion object {
         const val CAN_ENABLE_DARK_MODE = "CAN_ENABLE_DARK_MODE"
         const val DARK_MODE = "DARK_MODE"
+        const val EMAIL = "EMAIL"
     }
+
+    override fun setEmail(email: String) = putString(EMAIL, email)
+
+    override fun getEmail() : String? = getString(EMAIL, "").takeIf { it != "" }
 
     override fun setCanEnableDarkMode(canEnableDarkMode: Boolean) = putBoolean(CAN_ENABLE_DARK_MODE, canEnableDarkMode)
 
@@ -21,6 +26,7 @@ internal class SettingsPreferencesImpl(ctx: Context) : Preferences(ctx, "Setting
     override fun setDarkMode(darkMode: Boolean) = putBoolean(DARK_MODE, darkMode)
 
     override fun getDarkMode(): Boolean = getBoolean(DARK_MODE, false)
+
 
 
 }
