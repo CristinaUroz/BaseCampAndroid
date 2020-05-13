@@ -132,7 +132,7 @@ abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, Base
     }
 
     fun notify(lambda: P.() -> Unit) {
-        presenter?.apply(lambda) ?: throw RuntimeException("Presenter must not be null at this point")
+        presenter?.apply(lambda) // ?: throw RuntimeException("Presenter must not be null at this point")
     }
 
     open fun onBackPressed(): Boolean = false

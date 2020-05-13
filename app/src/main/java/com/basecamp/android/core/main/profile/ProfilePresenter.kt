@@ -5,11 +5,19 @@ import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.Presenter
 import com.basecamp.android.core.main.actions.GoToSplashContainerAction
+import com.basecamp.android.data.datasources.ResponseState
+import com.basecamp.android.data.repositories.datasources.SettingsPreferences
+import com.basecamp.android.domain.models.User
+import com.basecamp.android.domain.usecases.GetUsersUseCase
 import com.basecamp.android.domain.usecases.LogInUseCase
 import kotlinx.coroutines.*
 
 @Injectable(Scope.BY_NEW)
-class ProfilePresenter(private val logInUseCase: LogInUseCase) : Presenter<ProfileContract.View, ProfileContract.Router>(), ProfileContract.Presenter {
+class ProfilePresenter(
+    private val logInUseCase: LogInUseCase,
+    private val getUsersUseCase: GetUsersUseCase,
+    private val settingsPreferences: SettingsPreferences
+) : Presenter<ProfileContract.View, ProfileContract.Router>(), ProfileContract.Presenter {
 
     private val job = SupervisorJob()
     private val errorHandler = CoroutineExceptionHandler { _, _ -> }
@@ -17,7 +25,22 @@ class ProfilePresenter(private val logInUseCase: LogInUseCase) : Presenter<Profi
 
     override fun getPageName(): String = "Profile"
 
-    override fun init(bundle: Bundle) {}
+    override fun init(bundle: Bundle) {
+        settingsPreferences.getEmail()?.let {
+            coroutineScope.launch {
+                var user: User? = null
+                draw { showProgressBar(true) }
+                withContext(Dispatchers.IO) {
+                    val response = getUsersUseCase.getUser(it)
+                    if (response is ResponseState.Success) {
+                        user = response.result
+
+                    }
+                }
+                user?.let { setUser(it) } ?: draw { showError(true) }
+            }
+        } ?: draw { showError(true) }
+    }
 
     override fun onLogOutClick() {
         coroutineScope.launch {
@@ -30,6 +53,17 @@ class ProfilePresenter(private val logInUseCase: LogInUseCase) : Presenter<Profi
 
     private fun goToSplashContainer(bundle: Bundle) {
         delegate(GoToSplashContainerAction::class) { goToSplashContainer(bundle) }
+    }
+
+    private fun setUser(user: User) {
+        draw { showError(false) }
+        draw { showProgressBar(false) }
+        user.apply {
+            name?.let { draw { setName(it) } }
+            email?.let { draw { setEmail(it) } }
+            description?.let { draw { setDescription(it) } }
+            draw { setPicture(image) }
+        }
     }
 
 }

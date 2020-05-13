@@ -18,4 +18,5 @@
     <string name="send_email">Send email</string>
     <string name="email_sent">Email sent to %1$s</string>
     <string name="log_out">Log Out</string>
+    <string name="edit">Edit</string>
 </resources>

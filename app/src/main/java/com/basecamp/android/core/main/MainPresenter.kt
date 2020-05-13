@@ -20,10 +20,10 @@ class MainPresenter(private val settingsPreferences: SettingsPreferences) : Pres
     }
 
     override fun onDarkModeClick() {
-        if (settingsPreferences.getDarkMode() && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
+        if (settingsPreferences.getDarkMode()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             settingsPreferences.setDarkMode(false)
-        } else if (!settingsPreferences.getDarkMode() && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
+        } else if (!settingsPreferences.getDarkMode()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             settingsPreferences.setDarkMode(true)
         }

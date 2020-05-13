@@ -9,7 +9,7 @@ interface AuthRepository {
 
     suspend fun logIn(email: String, password: String): ResponseState<AuthResult?>
 
-    suspend fun signUp(name: String, email: String, password: String): ResponseState<String>
+    suspend fun signUp(name: String, email: String, password: String): ResponseState<Void>
 
     suspend fun logOut()
 

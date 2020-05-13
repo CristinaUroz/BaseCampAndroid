@@ -4,7 +4,14 @@ import com.basecamp.android.core.BaseContract
 
 interface ProfileContract {
 
-    interface View : BaseContract.View
+    interface View : BaseContract.View {
+        fun setName(name: String)
+        fun setDescription (description: String)
+        fun setEmail (email:String)
+        fun setPicture (picture: String?)
+        fun showError (b: Boolean)
+        fun showProgressBar(b: Boolean)
+    }
 
     interface Router : BaseContract.Router
 

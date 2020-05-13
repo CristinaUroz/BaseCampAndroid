@@ -6,6 +6,8 @@ import com.basecamp.android.domain.models.User
 
 interface DDBBDataSource: DataSource {
 
-    suspend fun createUser (id: String, user: User): ResponseState<String>
+    suspend fun createUser (id: String, user: User): ResponseState<Void>
+
+    suspend fun getUser (email: String): ResponseState<User>
 
 }

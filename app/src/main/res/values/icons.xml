@@ -13,7 +13,10 @@
     <drawable name="info_inactive">@drawable/ic_info_inactive</drawable>
 
     <drawable name="go_back">@drawable/ic_go_back</drawable>
+    <drawable name="edit">@drawable/ic_edit</drawable>
+    <drawable name="default_profile">@drawable/ic_default_profile_normal</drawable>
     <drawable name="change_secret">@drawable/ic_mask_inactive</drawable>
     <drawable name="hacker">@drawable/ic_hacker</drawable>
+    <drawable name="error">@drawable/ic_error</drawable>
 
 </resources>

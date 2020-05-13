@@ -13,5 +13,6 @@
     <drawable name="info_inactive">@drawable/ic_team_inactive</drawable>
 
     <drawable name="change_secret">@drawable/ic_mask_active</drawable>
+    <drawable name="default_profile">@drawable/ic_default_profile_mafia</drawable>
 
 </resources>

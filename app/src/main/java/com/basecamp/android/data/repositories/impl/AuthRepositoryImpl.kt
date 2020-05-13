@@ -22,13 +22,13 @@ class AuthRepositoryImpl(private val authDataSource: AuthDataSource, private val
         if (it is ResponseState.Success) settingsPreferences.setEmail(email)
     }
 
-    override suspend fun signUp(name: String, email: String, password: String): ResponseState<String> {
+    override suspend fun signUp(name: String, email: String, password: String): ResponseState<Void> {
         return when (val response =  authDataSource.signUp(email, password)) {
             is ResponseState.Success -> {
                 settingsPreferences.setEmail(email)
-                response.result?.user?.uid?.let {
-                    ddbbDataSource.createUser(it, User(name,email))
-                } ?: safeCall { suspendCoroutine<String> { cont -> cont.resumeWithException(Throwable("Something went wrong")) } } }
+                response.result?.user?.uid?.let { //TODO
+                    ddbbDataSource.createUser(email, User(name,email))
+                } ?: safeCall { suspendCoroutine<Void> { cont -> cont.resumeWithException(Throwable("Something went wrong")) } } }
             else -> (response as ResponseState.Failure)
         }
     }

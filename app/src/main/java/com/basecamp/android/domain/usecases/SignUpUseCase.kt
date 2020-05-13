@@ -9,6 +9,6 @@ import com.basecamp.android.domain.repositories.AuthRepository
 @Injectable(Scope.BY_USE)
 class SignUpUseCase(private val authRepository: AuthRepository) : UseCase {
 
-    suspend fun signUp(name: String, email: String, password: String): ResponseState<String> = authRepository.signUp(name, email, password)
+    suspend fun signUp(name: String, email: String, password: String): ResponseState<Void> = authRepository.signUp(name, email, password)
 
 }
