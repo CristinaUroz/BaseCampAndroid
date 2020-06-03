@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.Presenter
+import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 import com.basecamp.android.domain.usecases.CurrentUserUseCase
 import kotlinx.coroutines.*
 
 @Injectable(Scope.BY_NEW)
-class SplashPresenter(private val currentUserUseCase: CurrentUserUseCase) : Presenter<SplashContract.View, SplashContract.Router>(), SplashContract.Presenter {
+class SplashPresenter(private val settingsPreferences: SettingsPreferences, private val currentUserUseCase: CurrentUserUseCase) : Presenter<SplashContract.View, SplashContract.Router>(), SplashContract.Presenter {
 
     private val job = SupervisorJob()
     private val errorHandler = CoroutineExceptionHandler { _, _ -> }
@@ -34,6 +35,7 @@ class SplashPresenter(private val currentUserUseCase: CurrentUserUseCase) : Pres
 
     override fun init(bundle: Bundle) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        settingsPreferences.setDarkMode(false)
         startNavigation()
     }
 

@@ -71,7 +71,7 @@
             <ImageView
                 android:id="@+id/screen_profile_picture"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginTop="20dp"/>
 
             <TextView
@@ -90,6 +90,17 @@
                 tools:text="CRISTINA" />
 
             <TextView
+                android:id="@+id/screen_profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textColor="@color/textColor"
+                android:alpha="0.7"
+                android:textSize="12sp"
+                tools:text="cursetbasecamp@gmail.com" />
+
+            <TextView
                 android:id="@+id/screen_profile_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,16 +109,6 @@
                 android:textColor="@color/textColor"
                 android:textSize="16sp"
                 tools:text="Descripcion" />
-
-            <TextView
-                android:id="@+id/screen_profile_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:textColor="#555555"
-                android:textSize="12sp"
-                tools:text="cursetbasecamp@gmail.com" />
 
             <TextView
                 android:id="@+id/screen_profile_logout_button"

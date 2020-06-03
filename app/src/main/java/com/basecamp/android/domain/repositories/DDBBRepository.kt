@@ -7,4 +7,5 @@ interface DDBBRepository {
 
     suspend fun getUser(email: String): ResponseState<User>
 
+    suspend fun updateUser(user: User): ResponseState<Void>
 }

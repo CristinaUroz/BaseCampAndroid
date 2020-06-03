@@ -9,4 +9,5 @@
     <color name="textColor">#000000</color>
     <color name="errorColor">#cc3333</color>
     <color name="presedErrorColor">#550000</color>
+    <color name="darkTransparentBackground">#88000000</color>
 </resources>

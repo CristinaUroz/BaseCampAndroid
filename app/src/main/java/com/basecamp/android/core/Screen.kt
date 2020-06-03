@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import cc.popkorn.inject
-import com.basecamp.android.R
 import com.basecamp.android.shared.extensions.isAssignableFrom
-import com.basecamp.android.shared.extensions.newInstance
 import kotlin.reflect.KClass
 
 abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, BaseContract.Router {
@@ -102,29 +100,6 @@ abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, Base
         } else {
             throw RuntimeException("Action could not be found")
         }
-    }
-
-    fun start(clazz: KClass<out Screen<*>>, params: Bundle, onResult: ((Bundle) -> Unit)? = null) {
-        val screen = clazz.newInstance()
-            .apply {
-                arguments = params
-                result = onResult
-            }
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_container_content, screen, clazz.simpleName)?.addToBackStack(clazz.simpleName)?.commit()
-    }
-
-    fun attach(container: Int, clazz: KClass<out Screen<*>>, params: Bundle) {
-        val screen = clazz.newInstance().apply { arguments = params }
-        childFragmentManager.beginTransaction().replace(container, screen, clazz.simpleName).commit()
-    }
-
-    fun startDialog(clazz: KClass<out Dialog<*>>, params: Bundle, onResult: ((Bundle) -> Unit)? = null) {
-        val screen = clazz.newInstance()
-            .apply {
-                arguments = params
-                result = onResult
-            }
-        activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_container_content, screen, clazz.simpleName)?.addToBackStack(clazz.simpleName)?.commit()
     }
 
     fun <V : View> findViewById(id: Int): V {

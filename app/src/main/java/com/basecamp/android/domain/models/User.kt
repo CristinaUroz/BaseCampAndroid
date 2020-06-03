@@ -5,23 +5,29 @@ import com.google.gson.annotations.SerializedName
 data class User(
 
     @SerializedName("name")
-    val name: String? = null,
+    var name: String? = null,
 
     @SerializedName("email")
-    val email: String? = null,
+    var email: String? = null,
 
     @SerializedName("image")
-    val image: String? = null,
+    var image: String? = null,
+
+    @SerializedName("imageM")
+    var imageM: String? = null,
 
     @SerializedName("group")
-    val group: Int? = null,
+    var group: Int? = null,
 
     @SerializedName("description")
-    val description: String? = null,
+    var description: String? = null,
+
+    @SerializedName("descriptionM")
+    var descriptionM: String? = null,
 
     @SerializedName("alias")
-    val alias: String? = null,
+    var alias: String? = null,
 
     @SerializedName("adult")
-    val adult: Boolean? = null
+    var adult: Boolean? = null
 )

@@ -19,4 +19,7 @@
     <drawable name="hacker">@drawable/ic_hacker</drawable>
     <drawable name="error">@drawable/ic_error</drawable>
 
+    <drawable name="close">@drawable/ic_close</drawable>
+    <drawable name="add">@drawable/ic_add</drawable>
+
 </resources>

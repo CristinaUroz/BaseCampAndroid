@@ -1,79 +1,84 @@
-package com.basecamp.android.core.main.profile
+package com.basecamp.android.core.main.profile.edit
 
 import android.os.Bundle
 import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.Presenter
-import com.basecamp.android.core.main.actions.GoToSplashContainerAction
 import com.basecamp.android.core.main.actions.ShowChangeToDarkMode
 import com.basecamp.android.data.datasources.ResponseState
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 import com.basecamp.android.domain.models.User
 import com.basecamp.android.domain.usecases.GetUsersUseCase
-import com.basecamp.android.domain.usecases.LogInUseCase
+import com.basecamp.android.domain.usecases.UpdateUserUseCase
 import kotlinx.coroutines.*
 
 @Injectable(Scope.BY_NEW)
-class ProfilePresenter(
-    private val logInUseCase: LogInUseCase,
+class EditProfilePresenter(
     private val getUsersUseCase: GetUsersUseCase,
-    private val settingsPreferences: SettingsPreferences
-) : Presenter<ProfileContract.View, ProfileContract.Router>(), ProfileContract.Presenter {
+    private val settingsPreferences: SettingsPreferences,
+    private val updateUserUseCase: UpdateUserUseCase
+) : Presenter<EditProfileContract.View, EditProfileContract.Router>(), EditProfileContract.Presenter {
 
     private val job = SupervisorJob()
     private val errorHandler = CoroutineExceptionHandler { _, _ -> }
     private val coroutineScope = CoroutineScope(job + Dispatchers.Main + errorHandler)
 
-    override fun getPageName(): String = "Profile"
+    private var user: User? = null
 
-    override fun init(bundle: Bundle) {}
+    override fun getPageName(): String = "Edit Profile"
 
-    override fun onFragmentResumed() {
-        delegate(ShowChangeToDarkMode::class) { showChangeToDarkMode(true) }
+    override fun init(bundle: Bundle) {
+        delegate(ShowChangeToDarkMode::class) { showChangeToDarkMode(false) }
+
         settingsPreferences.getEmail()?.let {
             coroutineScope.launch {
-                var user: User? = null
                 draw { showProgressBar(true) }
                 withContext(Dispatchers.IO) {
                     val response = getUsersUseCase.getUser(it)
                     if (response is ResponseState.Success) {
                         user = response.result
-
                     }
                 }
                 user?.let { setUser(it) } ?: draw { showError(true) }
             }
         } ?: draw { showError(true) }
-    }
 
-    override fun onLogOutClick() {
-        coroutineScope.launch {
-            withContext(Dispatchers.IO) {
-                logInUseCase.logOut()
-                goToSplashContainer(Bundle())
-            }
-        }
-    }
-
-    private fun goToSplashContainer(bundle: Bundle) {
-        delegate(GoToSplashContainerAction::class) { goToSplashContainer(bundle) }
     }
 
     private fun setUser(user: User) {
         draw { showError(false) }
         draw { showProgressBar(false) }
         user.apply {
-            draw { showCanEdit(true) }
             if (!settingsPreferences.getDarkMode()) {
-                name?.let { draw { setName(it) } }
-                email?.let { draw { setEmail(it) } }
-                description?.let { draw { setDescription(it) } }
-                draw { setPicture(image) }
+                draw { setInformation(user.image, user.name, user.description) }
+
             } else {
-                alias?.let { draw { setName(it) } }
-                group?.let { draw { setGroup(it) } }
-                descriptionM?.let { draw { setDescription(it) } }
-                draw { setPicture(imageM) }
+                draw { setInformation(user.imageM, user.alias, user.descriptionM) }
+            }
+        }
+    }
+
+
+    override fun onSaveClick(picture: String?, name: String, description: String?) {
+        user?.let {
+            if (!settingsPreferences.getDarkMode()) {
+                it.image = picture
+                it.name = name
+                it.description = description
+
+            } else {
+                it.imageM = picture
+                it.alias = name
+                it.descriptionM = description
+            }
+
+            coroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    val response = updateUserUseCase.updateUser(it)
+                    if (response is ResponseState.Success) {
+                        navigate { closeDialog() }
+                    }
+                }
             }
         }
     }

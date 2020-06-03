@@ -8,8 +8,10 @@ import com.basecamp.android.domain.models.User
 import com.basecamp.android.domain.repositories.DDBBRepository
 
 @Injectable(Scope.BY_USE)
-class DDBBRepositoryImpl (private val ddbbDataSource: DDBBDataSource): DDBBRepository {
+class DDBBRepositoryImpl(private val ddbbDataSource: DDBBDataSource) : DDBBRepository {
 
     override suspend fun getUser(email: String): ResponseState<User> = ddbbDataSource.getUser(email)
+
+    override suspend fun updateUser(user: User): ResponseState<Void> = ddbbDataSource.updateUser(user)
 
 }

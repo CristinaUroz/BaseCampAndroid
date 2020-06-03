@@ -33,7 +33,7 @@ class MainContainer : Container<MainPresenter>(), MainContract.View, MainContrac
     }
 
     override fun showFloatingButton(b: Boolean) {
-        if (b) darkModeButton.visibility = if (b) View.VISIBLE else View.GONE
+        darkModeButton.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     override fun goToWelcome(bundle: Bundle) {

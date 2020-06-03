@@ -5,6 +5,7 @@ import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.Presenter
 import com.basecamp.android.core.main.actions.GoToWelcomeContainerAction
+import com.basecamp.android.core.main.actions.ShowChangeToDarkMode
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 
 @Injectable(Scope.BY_NEW)
@@ -12,7 +13,9 @@ class InfoPresenter(private val settingsPreferences: SettingsPreferences) : Pres
 
     override fun getPageName(): String = "Info"
 
-    override fun init(bundle: Bundle) {}
+    override fun init(bundle: Bundle) {
+        delegate(ShowChangeToDarkMode::class){showChangeToDarkMode(true)}
+    }
 
     override fun onEnterDarkModeClick() {
         delegate(GoToWelcomeContainerAction::class){goToWelcomeContainer(Bundle())}

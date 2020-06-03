@@ -7,11 +7,12 @@ import cc.popkorn.core.Scope
 import com.basecamp.android.core.Presenter
 import com.basecamp.android.core.main.actions.GoToSplashContainerAction
 import com.basecamp.android.core.main.actions.GoToWelcomeContainerAction
+import com.basecamp.android.core.main.actions.ShowChangeToDarkMode
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 
 @Injectable(Scope.BY_NEW)
 class MainPresenter(private val settingsPreferences: SettingsPreferences) : Presenter<MainContract.View, MainContract.Router>(), MainContract.Presenter, GoToWelcomeContainerAction,
-    GoToSplashContainerAction {
+    GoToSplashContainerAction, ShowChangeToDarkMode {
 
     override fun getPageName(): String = "Main"
 
@@ -35,5 +36,12 @@ class MainPresenter(private val settingsPreferences: SettingsPreferences) : Pres
 
     override fun goToSplashContainer(bundle: Bundle) {
         navigate { goToSplash(bundle) }
+    }
+
+    override fun showChangeToDarkMode(b: Boolean) {
+        if (settingsPreferences.getCanEnableDarkMode()) {
+            draw { showFloatingButton(b) }
+        }
+        else draw { showFloatingButton(false) }
     }
 }

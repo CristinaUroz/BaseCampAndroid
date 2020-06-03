@@ -19,4 +19,17 @@
     <string name="email_sent">Email sent to %1$s</string>
     <string name="log_out">Log Out</string>
     <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="description">Description</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="you_need_a_name">You need to have a name!</string>
+    <string name="you_need_an_alias">You need to have an alias!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_picture">Add picture</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="you_dont_have_camera_permissions">You have denied Storage permission and you will no longer be able to take/pick pictures unless you grant it manually</string>
+    <string name="could_not_load_your_picture">Could not load image</string>
+    <string name="alias">Alias</string>
 </resources>

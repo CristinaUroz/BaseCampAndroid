@@ -3,7 +3,7 @@
     <color name="colorPrimary">#440000</color>
     <color name="colorPrimaryDark">#AA0000</color>
     <color name="colorAccent">#FFCC80</color>
-    <color name="navigationTabsBackground">#202020</color>
-    <color name="fragmentBackground">#000000</color>
+    <color name="navigationTabsBackground">#000</color>
+    <color name="fragmentBackground">#404040</color>
     <color name="textColor">#FFFFFF</color>
 </resources>
