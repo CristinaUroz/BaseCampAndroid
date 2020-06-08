@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/main_navigation_host_fragment"
         android:layout_marginTop="12dp"
-        android:name="com.basecamp.android.core.main.MainNavHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"

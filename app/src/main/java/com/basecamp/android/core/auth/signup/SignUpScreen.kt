@@ -22,15 +22,13 @@ class SignUpScreen : Screen<SignUpPresenter>(), SignUpContract.View, SignUpContr
 
     private val emailRegex = Regex("^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\$")
 
-    var onLogInClick: () -> Unit = {}
-
     override fun getLayout(): Int = R.layout.screen_signup
 
     override fun getPresenter(): KClass<SignUpPresenter> = SignUpPresenter::class
 
     override fun init() {
         logInButton.setOnClickListener {
-            onLogInClick.invoke()
+            navigate(SignUpScreenDirections.actionSignupScreenToLoginScreen())
         }
         signUpButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE

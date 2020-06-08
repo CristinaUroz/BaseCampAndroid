@@ -15,8 +15,6 @@ interface BaseContract {
     }
 
     interface Router {
-        fun close()
-        fun close(bundle: Bundle)
         fun <A : Action> getAction(clazz: KClass<A>): A
     }
 }

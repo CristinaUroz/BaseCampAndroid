@@ -12,7 +12,6 @@ import com.basecamp.android.core.Screen
 import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.common.extensions.getGroupName
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlin.reflect.KClass
@@ -29,7 +28,6 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
     private val editView by lazy { findViewById<ImageView>(R.id.screen_profile_edit) }
 
     private val settingsPreferences = inject<SettingsPreferences>()
-    var onEditClick: () -> Unit = {}
 
     override fun getLayout(): Int = R.layout.screen_profile
 
@@ -40,9 +38,9 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
         logOutButton.setOnClickListener {
             notify { onLogOutClick() }
         }
-
+        
         editView.setOnClickListener {
-            onEditClick.invoke()
+            navigate(ProfileScreenDirections.actionProfileScreenToEditprofileDialog())
         }
     }
 
@@ -72,7 +70,6 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
     }
 
     override fun setGroup(group: Int) {
-//        TODO("Not yet implemented")
         emailTextView.text = group.getGroupName()
 
     }
@@ -82,7 +79,7 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
             picture?.let { pic ->
                 BCGlide(it)
                     .load(picture)
-                    .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(50)))
+                    .apply(RequestOptions().transform( RoundedCorners(80)))
                     .into(pictureImageView)
             } ?: R.drawable.ic_default_profile_normal
                 .takeIf { !settingsPreferences.getDarkMode() }

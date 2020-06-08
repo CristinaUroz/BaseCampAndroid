@@ -21,4 +21,5 @@ class AuthContainer : Container<AuthPresenter>(), AuthContract.View, AuthContrac
         startActivity(caller)
         finish()
     }
+
 }

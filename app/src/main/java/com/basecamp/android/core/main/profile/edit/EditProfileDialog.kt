@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import cc.popkorn.inject
+import com.basecamp.android.Constants
 import com.basecamp.android.R
-import com.basecamp.android.core.Dialog
+import com.basecamp.android.core.Screen
 import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.common.extensions.closeFragment
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlin.reflect.KClass
 
-class EditProfileDialog : Dialog<EditProfilePresenter>(), EditProfileContract.View, EditProfileContract.Router {
+class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.View, EditProfileContract.Router {
 
     private val saveButton by lazy { findViewById<Button>(R.id.dialog_editprofile_save_button) }
     private val coverPicture by lazy { findViewById<ImageView>(R.id.dialog_editprofile_cover_picture) }
@@ -29,18 +33,23 @@ class EditProfileDialog : Dialog<EditProfilePresenter>(), EditProfileContract.Vi
     private val errorLayout by lazy { findViewById<LinearLayout>(R.id.dialog_editprofile_error) }
     private var picture: String? = null
 
-    var onAddPictureClick: (bundle: Bundle) -> Unit = {}
-    private var cameraGalleryBundle: Bundle = Bundle.EMPTY
-
     private var settingsPreferences = inject<SettingsPreferences>()
     override fun getLayout(): Int = R.layout.dialog_editprofile
 
     override fun getPresenter(): KClass<EditProfilePresenter> = EditProfilePresenter::class
 
+    companion object {
+        const val NAV_REQUEST_CODE = 5696
+    }
+
     override fun init() {
         saveButton.setOnClickListener { save() }
         deletePictureButton.setOnClickListener { deletePicture() }
-        addPictureButton.setOnClickListener { onAddPictureClick.invoke(cameraGalleryBundle) }
+
+        addPictureButton.setOnClickListener {
+            navigate(EditProfileDialogDirections.actionEditprofileDialogToCameragalleryDialog(), NAV_REQUEST_CODE)
+        }
+
         if (settingsPreferences.getDarkMode()) {
             aliasLayout.visibility = View.VISIBLE
             nameLayout.visibility = View.GONE
@@ -80,7 +89,9 @@ class EditProfileDialog : Dialog<EditProfilePresenter>(), EditProfileContract.Vi
         context?.let {
             BCGlide(it)
                 .load(picture)
+                .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(80)))
                 .into(coverPicture)
+
         }
         coverPicture.visibility = View.VISIBLE
         addPictureButton.visibility = View.GONE
@@ -97,4 +108,16 @@ class EditProfileDialog : Dialog<EditProfilePresenter>(), EditProfileContract.Vi
     override fun closeDialog() {
         closeFragment()
     }
+
+
+    override fun onFragmentResult(requestCode: Int, bundle: Bundle) {
+        if (requestCode == NAV_REQUEST_CODE) {
+            bundle.getString(Constants.IMAGE_PATH)?.let {
+                addPicture(it)
+                picture = it
+            }
+        }
+        super.onFragmentResult(requestCode, bundle)
+    }
+
 }

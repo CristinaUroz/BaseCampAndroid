@@ -13,19 +13,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import cc.popkorn.inject
 import com.basecamp.android.Constants
 import com.basecamp.android.R
-import com.basecamp.android.core.Dialog
+import com.basecamp.android.core.Screen
 import com.basecamp.android.core.common.PathUtil
+import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.common.extensions.closeFragment
+import com.basecamp.android.core.main.profile.edit.EditProfileDialog.Companion.NAV_REQUEST_CODE
 import com.basecamp.android.data.Directory
+import com.phelat.navigationresult.navigateUp
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -35,28 +35,32 @@ import kotlin.math.ceil
 import kotlin.reflect.KClass
 
 
-class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContract.View,
+class CameraGalleryDialog : Screen<CameraGalleryPresenter>(), CameraGalleryContract.View,
     CameraGalleryContract.Router {
 
-    private val title by lazy { findViewById<TextView>(R.id.dialog_confirmation_title) }
-    private val message by lazy { findViewById<TextView>(R.id.dialog_confirmation_message) }
-    private val optCamera by lazy { findViewById<TextView>(R.id.dialog_confirmation_opt1) }
-    private val optGallery by lazy { findViewById<TextView>(R.id.dialog_confirmation_opt2) }
-    private val cancel by lazy { findViewById<TextView>(R.id.dialog_confirmation_cancel) }
+    private val optCamera by lazy { findViewById<TextView>(R.id.dialog_confirmation_camera_button) }
+    private val optGallery by lazy { findViewById<TextView>(R.id.dialog_confirmation_gallery_button) }
     private val goBackButton by lazy { findViewById<ImageButton>(R.id.dialog_confirmation_goback_button) }
+    private val selectButton by lazy { findViewById<ImageView>(R.id.dialog_confirmation_select_picture) }
+    private val deleteButton by lazy { findViewById<ImageView>(R.id.dialog_confirmation_delete_picture) }
+    private val selectedPicture by lazy { findViewById<ImageView>(R.id.dialog_confirmation_selected_picture) }
     private val constraintLayout by lazy { findViewById<ConstraintLayout>(R.id.dialog_confirmation_constraint_layout) }
+    private val selectedPictureLayout by lazy { findViewById<LinearLayout>(R.id.dialog_confirmation_selected_picture_layout) }
+    private val buttonsLayout by lazy { findViewById<LinearLayout>(R.id.dialog_confirmation_select_buttons_layout) }
+
+    private var returnImage: String? = null
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 0
         const val REQUEST_IMAGE_GALLERY = 1
     }
 
-    private val directory = inject<Directory>()
+    private val directory = cc.popkorn.inject<Directory>()
 
     private var pictureFile: File? = null
     private var intentDone = false
 
-    override fun getLayout(): Int = R.layout.dialog_confirmation
+    override fun getLayout(): Int = R.layout.dialog_camera_gallery
 
     override fun getPresenter(): KClass<CameraGalleryPresenter> = CameraGalleryPresenter::class
 
@@ -76,23 +80,28 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
                 REQUEST_IMAGE_GALLERY
             )
         }
-        goBackButton.setOnClickListener{
+        goBackButton.setOnClickListener {
             closeFragment()
         }
-        cancel.text = context?.getString(android.R.string.cancel)
-        cancel.setOnClickListener { closeFragment() }
-        constraintLayout.setOnClickListener { closeFragment() }
-        title.text = context?.getString(R.string.add_picture)
-        optCamera.text = context?.getString(R.string.camera)
-        optGallery.text = context?.getString(R.string.gallery)
-        message.visibility = View.GONE
+
+        selectButton.setOnClickListener {
+            navigateUp(NAV_REQUEST_CODE, Bundle().apply {
+                putString(Constants.IMAGE_PATH, returnImage)
+            })
+        }
+
+        constraintLayout.setOnClickListener {
+            closeFragment()
+        }
+
+        deleteButton.setOnClickListener {
+            returnImage = null
+            selectedPictureLayout.visibility = View.GONE
+            buttonsLayout.visibility = View.VISIBLE
+        }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_IMAGE_CAPTURE -> {
@@ -122,14 +131,14 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
                                 )]
                             )
                         }.contains(true)) {
-                        close()
+                        closeFragment()
                         Toast.makeText(
                             context,
                             context?.getString(R.string.you_dont_have_camera_permissions),
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        close()
+                        closeFragment()
                     }
                 }
             }
@@ -147,14 +156,14 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
                                 )]
                             )
                         }.contains(true)) {
-                        close()
+                        closeFragment()
                         Toast.makeText(
                             context,
                             context?.getString(R.string.you_dont_have_camera_permissions),
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        close()
+                        closeFragment()
                     }
                 }
             }
@@ -163,6 +172,11 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        activityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         var imagePath: String? = null
         when (requestCode) {
             REQUEST_IMAGE_CAPTURE -> {
@@ -196,16 +210,24 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
             }
 
         }
-        super.onActivityResult(requestCode, resultCode, data)
-        if (imagePath == null && intentDone) Toast.makeText(
-            context,
-            context?.getString(R.string.could_not_load_your_picture),
-            Toast.LENGTH_LONG
-        ).show()
-        close(Bundle().apply { imagePath?.let { putString(Constants.IMAGE_PATH, it) } })
+        if (imagePath == null && intentDone)
+            Toast.makeText(
+                context,
+                context?.getString(R.string.could_not_load_your_picture),
+                Toast.LENGTH_LONG
+            ).show()
+        else if (imagePath != null && intentDone) {
 
+            selectedPictureLayout.visibility = View.VISIBLE
+            buttonsLayout.visibility = View.GONE
+            returnImage = imagePath
+            context?.let {
+                BCGlide(it)
+                    .load(imagePath)
+                    .into(selectedPicture)
+            }
+        }
     }
-
 
     private fun Uri.copyImageToCacheDir(): File? {
         return context?.contentResolver?.openFileDescriptor(this, "r", null)?.let {
@@ -221,9 +243,8 @@ class CameraGalleryDialog : Dialog<CameraGalleryPresenter>(), CameraGalleryContr
 
     private fun createImageFile(): File? {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", directory.mediaDir.apply { mkdirs() })
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", directory.mediaDir)
     }
-
 
     private fun createResizedImageFile(): File? {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())

@@ -48,7 +48,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
 
                 <ProgressBar
                     android:id="@+id/screen_profile_progress_bar"
@@ -70,9 +71,10 @@
 
             <ImageView
                 android:id="@+id/screen_profile_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"/>
 
             <TextView
                 android:id="@+id/screen_profile_name"

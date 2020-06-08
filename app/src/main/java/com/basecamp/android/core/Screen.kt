@@ -5,22 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import cc.popkorn.inject
 import com.basecamp.android.shared.extensions.isAssignableFrom
+import com.phelat.navigationresult.BundleFragment
 import kotlin.reflect.KClass
 
-abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, BaseContract.Router {
-
-    var result: ((Bundle) -> Unit)? = null
-    private var navigationArgs: Bundle = Bundle()
+abstract class Screen<P : Presenter<*, *>> : BundleFragment(), BaseContract.View, BaseContract.Router {
 
     private var presenter: P? = null
     private var fullview: View? = null
 
     abstract fun getLayout(): Int
     abstract fun getPresenter(): KClass<P>
-    abstract fun init()
+    abstract
+    fun init()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (presenter == null) {
@@ -60,22 +58,14 @@ abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, Base
     override fun onDestroy() {
         notify { destroy() }
         super.onDestroy()
-        result?.invoke(navigationArgs)
     }
 
-    override fun close(bundle: Bundle) {
-        navigationArgs = bundle
-        close()
+    fun <V : View> findViewById(id: Int): V {
+        return fullview?.findViewById(id) ?: throw RuntimeException("fullview is null")
     }
 
-    override fun close() {
-        //si el manager es null, vol dir que el fragment no esta attachat a res, el close no ha de fer res
-        val fragmentManager = fragmentManager ?: return
-        if (fragmentManager.backStackEntryCount > 0) {
-            fragmentManager.popBackStack()
-        } else {
-            activity?.onBackPressed()
-        }
+    fun notify(lambda: P.() -> Unit) {
+        presenter?.apply(lambda) // ?: throw RuntimeException("Presenter must not be null at this point")
     }
 
     override fun <A : Action> getAction(clazz: KClass<A>): A {
@@ -102,15 +92,6 @@ abstract class Screen<P : Presenter<*, *>> : Fragment(), BaseContract.View, Base
         }
     }
 
-    fun <V : View> findViewById(id: Int): V {
-        return fullview?.findViewById(id) ?: throw RuntimeException("fullview is null")
-    }
-
-    fun notify(lambda: P.() -> Unit) {
-        presenter?.apply(lambda) // ?: throw RuntimeException("Presenter must not be null at this point")
-    }
-
-    open fun onBackPressed(): Boolean = false
 
 }
 

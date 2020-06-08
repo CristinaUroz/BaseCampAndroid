@@ -7,13 +7,13 @@ import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.basecamp.android.R
-import com.basecamp.android.core.Container
+import com.basecamp.android.core.FragmentResultContainer
 import com.basecamp.android.core.splash.SplashContainer
 import com.basecamp.android.core.welcome.WelcomeContainer
 import kotlinx.android.synthetic.main.container_main.*
 import kotlin.reflect.KClass
 
-class MainContainer : Container<MainPresenter>(), MainContract.View, MainContract.Router {
+class MainContainer : FragmentResultContainer<MainPresenter>(), MainContract.View, MainContract.Router {
 
     private val darkModeButton by lazy { findViewById<ImageView>(R.id.enable_dark_mode) }
     override fun getLayout(): Int = R.layout.container_main
@@ -48,5 +48,7 @@ class MainContainer : Container<MainPresenter>(), MainContract.View, MainContrac
         startActivity(caller)
         finish()
     }
+
+    override fun getNavHostFragmentId(): Int = R.id.main_navigation_host_fragment
 
 }

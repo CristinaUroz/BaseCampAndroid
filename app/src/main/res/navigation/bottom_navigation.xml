@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/feed_screen"
         android:name="com.basecamp.android.core.main.feed.FeedScreen"
-        android:label="feed_screen"
+        android:label="FeedScreen"
         tools:layout="@layout/screen_feed" />
 
     <fragment
         android:id="@+id/profile_screen"
         android:name="com.basecamp.android.core.main.profile.ProfileScreen"
-        android:label="profile_screen"
+        android:label="ProfileScreen"
         tools:layout="@layout/screen_profile">
         <action
             android:id="@+id/action_profile_screen_to_editprofile_dialog"
@@ -24,13 +24,13 @@
     <fragment
         android:id="@+id/info_screen"
         android:name="com.basecamp.android.core.main.info.InfoScreen"
-        android:label="info_screen"
+        android:label="InfoScreen"
         tools:layout="@layout/screen_info" />
 
     <fragment
         android:id="@+id/editprofile_dialog"
         android:name="com.basecamp.android.core.main.profile.edit.EditProfileDialog"
-        android:label="editprofile_dialog"
+        android:label="EditProfileDialog"
         tools:layout="@layout/dialog_editprofile">
         <action
             android:id="@+id/action_editprofile_dialog_to_cameragallery_dialog"
@@ -40,8 +40,8 @@
     <fragment
         android:id="@+id/cameragallery_dialog"
         android:name="com.basecamp.android.core.common.cameragallery.CameraGalleryDialog"
-        android:label="cameragallery_dialog"
-        tools:layout="@layout/dialog_confirmation">
+        android:label="CameraGalleryDialog"
+        tools:layout="@layout/dialog_camera_gallery">
 
     </fragment>
 

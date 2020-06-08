@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 
 fun BCGlide(context: Context) = Glide.with(context.applicationContext)
@@ -12,7 +13,8 @@ fun BCGlide(context: Context) = Glide.with(context.applicationContext)
  * Invokes the Activity method with same name in order to allow back navigation.
  */
 fun Fragment.closeFragment() {
-    requireActivity().onBackPressedDispatcher.onBackPressed()
+    Navigation.findNavController(this.requireView()).navigateUp()
+//    requireActivity().onBackPressedDispatcher.onBackPressed()
 }
 
 fun Context.hideKeyboard() {

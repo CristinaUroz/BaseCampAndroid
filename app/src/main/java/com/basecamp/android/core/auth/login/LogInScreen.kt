@@ -20,14 +20,14 @@ class LogInScreen : Screen<LogInPresenter>(), LogInContract.View, LogInContract.
     private val logInButton by lazy { findViewById<Button>(R.id.screen_login_login_button_button) }
     private val progressBar by lazy { findViewById<ProgressBar>(R.id.screen_login_progress_bar) }
 
-    var onForgotPasswordClick: () -> Unit = {}
-
     override fun getLayout(): Int = R.layout.screen_login
 
     override fun getPresenter(): KClass<LogInPresenter> = LogInPresenter::class
 
     override fun init() {
-        forgotPasswordButton.setOnClickListener { onForgotPasswordClick.invoke() }
+        forgotPasswordButton.setOnClickListener {
+            navigate(LogInScreenDirections.actionLoginScreenToForgotpasswordScreen())
+        }
         signUpButton.setOnClickListener { closeFragment() }
         logInButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE

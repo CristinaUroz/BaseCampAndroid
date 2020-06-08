@@ -21,5 +21,6 @@
 
     <drawable name="close">@drawable/ic_close</drawable>
     <drawable name="add">@drawable/ic_add</drawable>
+    <drawable name="tick">@drawable/ic_tick</drawable>
 
 </resources>
