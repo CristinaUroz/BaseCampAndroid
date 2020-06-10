@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <drawable name="feed">@drawable/feed_selector</drawable>
-    <drawable name="profile">@drawable/profile_selector</drawable>
-    <drawable name="info">@drawable/info_selector</drawable>
+    <drawable name="feed_tab">@drawable/feed_selector</drawable>
+    <drawable name="profile_tab">@drawable/profile_selector</drawable>
+    <drawable name="info_tab">@drawable/info_selector</drawable>
 
     <drawable name="feed_active">@drawable/ic_news_active</drawable>
     <drawable name="profile_active">@drawable/ic_profile_active</drawable>

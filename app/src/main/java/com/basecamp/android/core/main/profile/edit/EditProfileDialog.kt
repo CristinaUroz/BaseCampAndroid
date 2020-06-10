@@ -99,7 +99,7 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
     }
 
     private fun deletePicture() {
-        this.picture = null
+        this.picture = ""
         coverPicture.visibility = View.GONE
         addPictureButton.visibility = View.VISIBLE
         deletePictureButton.visibility = View.GONE

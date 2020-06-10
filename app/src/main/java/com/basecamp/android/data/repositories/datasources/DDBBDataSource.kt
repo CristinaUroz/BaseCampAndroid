@@ -12,4 +12,8 @@ interface DDBBDataSource : DataSource {
 
     suspend fun updateUser(user: User): ResponseState<Void>
 
+    suspend fun uploadImage(src: String, name: String): ResponseState<String>
+
+    suspend fun deleteImage(name: String): ResponseState<Void>
+
 }

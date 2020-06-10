@@ -76,7 +76,7 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
 
     override fun setPicture(picture: String?) {
         context?.let {
-            picture?.let { pic ->
+            picture?.takeIf { picture != "" }?.let { pic ->
                 BCGlide(it)
                     .load(picture)
                     .apply(RequestOptions().transform( RoundedCorners(80)))
