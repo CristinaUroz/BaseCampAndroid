@@ -46,6 +46,7 @@ class CameraGalleryDialog : Screen<CameraGalleryPresenter>(), CameraGalleryContr
     private val selectedPicture by lazy { findViewById<ImageView>(R.id.dialog_confirmation_selected_picture) }
     private val constraintLayout by lazy { findViewById<ConstraintLayout>(R.id.dialog_confirmation_constraint_layout) }
     private val selectedPictureLayout by lazy { findViewById<LinearLayout>(R.id.dialog_confirmation_selected_picture_layout) }
+    private val confirmationButtonsLayout by lazy { findViewById<ConstraintLayout>(R.id.dialog_confirmation_confirmation_buttons_layout) }
     private val buttonsLayout by lazy { findViewById<LinearLayout>(R.id.dialog_confirmation_select_buttons_layout) }
 
     private var returnImage: String? = null
@@ -97,6 +98,7 @@ class CameraGalleryDialog : Screen<CameraGalleryPresenter>(), CameraGalleryContr
         deleteButton.setOnClickListener {
             returnImage = null
             selectedPictureLayout.visibility = View.GONE
+            confirmationButtonsLayout.visibility = View.GONE
             buttonsLayout.visibility = View.VISIBLE
         }
     }
@@ -217,8 +219,8 @@ class CameraGalleryDialog : Screen<CameraGalleryPresenter>(), CameraGalleryContr
                 Toast.LENGTH_LONG
             ).show()
         else if (imagePath != null && intentDone) {
-
             selectedPictureLayout.visibility = View.VISIBLE
+            confirmationButtonsLayout.visibility = View.VISIBLE
             buttonsLayout.visibility = View.GONE
             returnImage = imagePath
             context?.let {

@@ -79,7 +79,7 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
     }
 
     override fun setInformation(picture: String?, name: String?, description: String?) {
-        picture?.let { addPicture(it) }
+        picture?.takeIf { it!="" }?.let { addPicture(it) }
         name?.let { if (!settingsPreferences.getDarkMode()) nameField.setText(it) else aliasField.setText(it) }
         description?.let { descriptionField.setText(description) }
     }
@@ -91,7 +91,6 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
                 .load(picture)
                 .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(80)))
                 .into(coverPicture)
-
         }
         coverPicture.visibility = View.VISIBLE
         addPictureButton.visibility = View.GONE
