@@ -23,7 +23,6 @@ import com.basecamp.android.core.Screen
 import com.basecamp.android.core.common.PathUtil
 import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.common.extensions.closeFragment
-import com.basecamp.android.core.main.profile.edit.EditProfileDialog.Companion.NAV_REQUEST_CODE
 import com.basecamp.android.data.Directory
 import com.phelat.navigationresult.navigateUp
 import java.io.File
@@ -54,6 +53,7 @@ class CameraGalleryDialog : Screen<CameraGalleryPresenter>(), CameraGalleryContr
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 0
         const val REQUEST_IMAGE_GALLERY = 1
+        const val NAV_REQUEST_CODE = 3
     }
 
     private val directory = cc.popkorn.inject<Directory>()

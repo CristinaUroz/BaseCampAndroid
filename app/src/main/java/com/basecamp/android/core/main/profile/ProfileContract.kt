@@ -19,6 +19,5 @@ interface ProfileContract {
 
     interface Presenter : BaseContract.Presenter {
         fun onLogOutClick()
-        fun onFragmentResumed()
     }
 }

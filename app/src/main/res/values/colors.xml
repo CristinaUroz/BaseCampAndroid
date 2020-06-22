@@ -10,4 +10,9 @@
     <color name="errorColor">#cc3333</color>
     <color name="presedErrorColor">#550000</color>
     <color name="darkTransparentBackground">#88000000</color>
+
+    <color name="armando_guerra">#d2cf77</color>
+    <color name="calaix_nikov">#6491b4</color>
+    <color name="staffa">#69c165</color>
+    <color name="chan_chu_yo">#d14f49</color>
 </resources>

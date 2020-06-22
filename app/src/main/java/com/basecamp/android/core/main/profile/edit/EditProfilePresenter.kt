@@ -22,14 +22,13 @@ class EditProfilePresenter(
     private val job = SupervisorJob()
     private val errorHandler = CoroutineExceptionHandler { _, _ -> }
     private val coroutineScope = CoroutineScope(job + Dispatchers.Main + errorHandler)
+    private val isDarkMode by lazy { settingsPreferences.getDarkMode() }
 
     private var user: User? = null
 
     override fun getPageName(): String = "Edit Profile"
 
     override fun init(bundle: Bundle) {
-        delegate(ShowChangeToDarkMode::class) { showChangeToDarkMode(false) }
-
         settingsPreferences.getEmail()?.let {
             coroutineScope.launch {
                 draw { showProgressBar(true) }
@@ -45,11 +44,15 @@ class EditProfilePresenter(
 
     }
 
+    override fun onResume() {
+        delegate(ShowChangeToDarkMode::class) { showChangeToDarkMode(false) }
+    }
+
     private fun setUser(user: User) {
         draw { showError(false) }
         draw { showProgressBar(false) }
         user.apply {
-            if (!settingsPreferences.getDarkMode()) {
+            if (!isDarkMode) {
                 draw { setInformation(user.image, user.name, user.description) }
 
             } else {
@@ -61,7 +64,7 @@ class EditProfilePresenter(
 
     override fun onSaveClick(picture: String?, name: String, description: String?) {
         user?.let {
-            if (!settingsPreferences.getDarkMode()) {
+            if (!isDarkMode) {
                 it.image = picture
                 it.name = name
                 it.description = description
@@ -77,6 +80,9 @@ class EditProfilePresenter(
                     val response = updateUserUseCase.updateUser(it)
                     if (response is ResponseState.Success) {
                         navigate { closeDialog() }
+                    }
+                    else {
+                        draw { setError((response as ResponseState.Failure).ex.localizedMessage ?: "Something went wrong, try again later") }
                     }
                 }
             }

@@ -7,6 +7,7 @@ import cc.popkorn.inject
 import com.basecamp.android.Constants
 import com.basecamp.android.R
 import com.basecamp.android.core.Screen
+import com.basecamp.android.core.common.cameragallery.CameraGalleryDialog.Companion.NAV_REQUEST_CODE
 import com.basecamp.android.core.common.extensions.BCGlide
 import com.basecamp.android.core.common.extensions.closeFragment
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
@@ -31,19 +32,22 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
     private val progressBar by lazy { findViewById<ProgressBar>(R.id.dialog_edit_profile_progressbar) }
     private val saveProgressBar by lazy { findViewById<ProgressBar>(R.id.dialog_editprofile_button_progressbar) }
     private val errorLayout by lazy { findViewById<LinearLayout>(R.id.dialog_editprofile_error) }
+    private val errorText by lazy { findViewById<TextView>(R.id.dialog_editprofile_error_text) }
     private var picture: String? = null
 
     private var settingsPreferences = inject<SettingsPreferences>()
+
     override fun getLayout(): Int = R.layout.dialog_editprofile
 
     override fun getPresenter(): KClass<EditProfilePresenter> = EditProfilePresenter::class
 
-    companion object {
-        const val NAV_REQUEST_CODE = 5696
-    }
-
     override fun init() {
-        saveButton.setOnClickListener { save() }
+        saveButton.setOnClickListener {
+            saveButton.isEnabled = false
+            errorText.text = ""
+            save()
+            //ERROR SI NO ES POSA NOM?
+        }
         deletePictureButton.setOnClickListener { deletePicture() }
 
         addPictureButton.setOnClickListener {
@@ -57,14 +61,13 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
     }
 
     private fun save() {
+        saveProgressBar.visibility = View.VISIBLE
         if (!settingsPreferences.getDarkMode()) {
             nameField.text?.toString()?.let {
-                saveProgressBar.visibility = View.VISIBLE
                 notify { onSaveClick(picture, it, descriptionField.text?.toString()) }
             } ?: Toast.makeText(context, context?.getString(R.string.you_need_a_name), Toast.LENGTH_LONG).show()
         } else {
             aliasField.text?.toString()?.let {
-                saveProgressBar.visibility = View.VISIBLE
                 notify { onSaveClick(picture, it, descriptionField.text?.toString()) }
             } ?: Toast.makeText(context, context?.getString(R.string.you_need_an_alias), Toast.LENGTH_LONG).show()
         }
@@ -79,7 +82,7 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
     }
 
     override fun setInformation(picture: String?, name: String?, description: String?) {
-        picture?.takeIf { it!="" }?.let { addPicture(it) }
+        picture?.takeIf { it != "" }?.let { addPicture(it) }
         name?.let { if (!settingsPreferences.getDarkMode()) nameField.setText(it) else aliasField.setText(it) }
         description?.let { descriptionField.setText(description) }
     }
@@ -117,6 +120,13 @@ class EditProfileDialog : Screen<EditProfilePresenter>(), EditProfileContract.Vi
             }
         }
         super.onFragmentResult(requestCode, bundle)
+    }
+
+    override fun setError(error: String) {
+        saveProgressBar.visibility = View.GONE
+
+        saveButton.isEnabled = true
+        errorText.text = error
     }
 
 }

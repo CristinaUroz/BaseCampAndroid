@@ -18,17 +18,26 @@ class AuthRepositoryImpl(private val authDataSource: AuthDataSource, private val
 
     override suspend fun forgotPassword(email: String): ResponseState<Void?> = authDataSource.forgotPassword(email)
 
-    override suspend fun logIn(email: String, password: String): ResponseState<AuthResult?> = authDataSource.logIn(email, password).also {
-        if (it is ResponseState.Success) settingsPreferences.setEmail(email)
+    override suspend fun logIn(email: String, password: String): ResponseState<AuthResult?> {
+        return authDataSource.logIn(email, password).also {
+            if (it is ResponseState.Success) {
+                settingsPreferences.setEmail(email)
+                val response = ddbbDataSource.getUser(email)
+                if (response is ResponseState.Success) {
+                    settingsPreferences.setCanWrite(response.result.adult ?: false)
+                }
+            }
+        }
     }
 
     override suspend fun signUp(name: String, email: String, password: String): ResponseState<Void> {
-        return when (val response =  authDataSource.signUp(email, password)) {
+        return when (val response = authDataSource.signUp(email, password)) {
             is ResponseState.Success -> {
                 settingsPreferences.setEmail(email)
                 response.result?.user?.uid?.let { //TODO
-                    ddbbDataSource.createUser(email, User(name,email))
-                } ?: safeCall { suspendCoroutine<Void> { cont -> cont.resumeWithException(Throwable("Something went wrong")) } } }
+                    ddbbDataSource.createUser(email, User(name, email))
+                } ?: safeCall { suspendCoroutine<Void> { cont -> cont.resumeWithException(Throwable("Something went wrong")) } }
+            }
             else -> (response as ResponseState.Failure)
         }
     }

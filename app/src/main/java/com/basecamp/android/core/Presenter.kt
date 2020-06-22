@@ -30,6 +30,7 @@ abstract class Presenter<V : BaseContract.View, R : BaseContract.Router> : BaseC
 
     override fun destroy() {}
 
+    open fun onResume() {}
 
     //VISTA
     @Synchronized

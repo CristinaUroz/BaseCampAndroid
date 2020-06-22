@@ -5,6 +5,7 @@ import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.data.datasources.ResponseState
 import com.basecamp.android.data.repositories.datasources.DDBBDataSource
+import com.basecamp.android.domain.models.News
 import com.basecamp.android.domain.models.User
 import com.basecamp.android.domain.repositories.DDBBRepository
 
@@ -28,7 +29,6 @@ class DDBBRepositoryImpl(private val ddbbDataSource: DDBBDataSource) : DDBBRepos
         }
 
         user.imageM?.takeIf { it != "" && !it.isInFirebaseStorage() }?.let {
-            Log.i("CRIS", "FIREBASE STORAGE IMAGE M")
             val response = ddbbDataSource.uploadImage(it, createProfilePicMName(user.email ?: "error"))
             if (response is ResponseState.Success) {
                 newImageM = response.result
@@ -45,10 +45,49 @@ class DDBBRepositoryImpl(private val ddbbDataSource: DDBBDataSource) : DDBBRepos
         return ddbbDataSource.updateUser(user)
     }
 
+    override suspend fun createNews(news: News): ResponseState<News> =
+        ddbbDataSource.createNews(news).also { response ->
+            if (response is ResponseState.Success) {
+                response.result.let { if (it.picture != null) updateNews(it) }
+            }
+        }
+
+    override suspend fun updateNews(news: News): ResponseState<Void> {
+        var newImage: String? = null
+        news.picture?.takeIf { it != "" && !it.isInFirebaseStorage() }?.let {
+            val response = ddbbDataSource.uploadImage(it, createNewsPicName(news.id ?: "error"))
+            if (response is ResponseState.Success) {
+                newImage = response.result
+            }
+        } ?: news.picture?.takeIf { it == "" }?.let {
+            ddbbDataSource.deleteImage(createNewsPicName(news.id ?: "error"))
+            newImage = ""
+        }
+        news.picture = newImage
+        return ddbbDataSource.updateNews(news)
+    }
+
+    override suspend fun deleteNews(id: String): ResponseState<Void> {
+        ddbbDataSource.deleteImage(createNewsPicName(id))
+        return ddbbDataSource.deleteNews(id)
+    }
+
+    override suspend fun getNews(id: String): ResponseState<News> = ddbbDataSource.getNews(id)
+
+    override suspend fun getAllNews(): ResponseState<List<News>> = ddbbDataSource.getAllNews()
+
+    override suspend fun getNormalNews(): ResponseState<List<News>> = ddbbDataSource.getNormalNews()
+
+    override suspend fun getMafiaNews(): ResponseState<List<News>> = ddbbDataSource.getMafiaNews()
+
     private fun String.isInFirebaseStorage(): Boolean = this.startsWith("https://firebasestorage.googleapis.com/")
 
     private fun createProfilePicName(name: String): String {
         return "profile/$name"
+    }
+
+    private fun createNewsPicName(name: String): String {
+        return "news/$name"
     }
 
     private fun createProfilePicMName(name: String): String {

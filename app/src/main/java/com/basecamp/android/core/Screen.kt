@@ -43,6 +43,7 @@ abstract class Screen<P : Presenter<*, *>> : BundleFragment(), BaseContract.View
     override fun onResume() {
         super.onResume()
         notify { attachRouter(this@Screen) }
+        notify { onResume() }
     }
 
     override fun onPause() {

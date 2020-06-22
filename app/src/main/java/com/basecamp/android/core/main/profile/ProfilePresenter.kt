@@ -28,7 +28,7 @@ class ProfilePresenter(
 
     override fun init(bundle: Bundle) {}
 
-    override fun onFragmentResumed() {
+    override fun onResume() {
         delegate(ShowChangeToDarkMode::class) { showChangeToDarkMode(true) }
         settingsPreferences.getEmail()?.let {
             coroutineScope.launch {
@@ -60,6 +60,7 @@ class ProfilePresenter(
     }
 
     private fun setUser(user: User) {
+        settingsPreferences.setCanWrite(user.adult ?: false)
         draw { showError(false) }
         draw { showProgressBar(false) }
         user.apply {

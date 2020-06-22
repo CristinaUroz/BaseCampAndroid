@@ -8,6 +8,7 @@ interface EditProfileContract {
         fun setInformation(picture: String?, name: String?, description: String?)
         fun showProgressBar(b: Boolean)
         fun showError(b: Boolean)
+        fun setError(error: String)
     }
 
     interface Router : BaseContract.Router{

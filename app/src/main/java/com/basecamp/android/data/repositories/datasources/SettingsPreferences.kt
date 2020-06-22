@@ -5,6 +5,9 @@ interface SettingsPreferences {
     fun setEmail(email: String)
     fun getEmail() : String?
 
+    fun setCanWrite(canWrite: Boolean)
+    fun getCanWrite() : Boolean
+
     fun setCanEnableDarkMode(canEnableDarkMode: Boolean)
     fun getCanEnableDarkMode() : Boolean
 

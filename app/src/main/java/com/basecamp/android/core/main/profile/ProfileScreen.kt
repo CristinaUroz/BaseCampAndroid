@@ -44,11 +44,6 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
         }
     }
 
-    override fun onResume() {
-        notify { onFragmentResumed() }
-        super.onResume()
-    }
-
     override fun showProgressBar(b: Boolean) {
         progressBar.visibility = if (b) View.VISIBLE else View.INVISIBLE
     }

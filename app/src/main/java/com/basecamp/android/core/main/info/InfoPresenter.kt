@@ -13,10 +13,11 @@ class InfoPresenter(private val settingsPreferences: SettingsPreferences) : Pres
 
     override fun getPageName(): String = "Info"
 
-    override fun init(bundle: Bundle) {
+    override fun init(bundle: Bundle) {}
+
+    override fun onResume() {
         delegate(ShowChangeToDarkMode::class){showChangeToDarkMode(true)}
     }
-
     override fun onEnterDarkModeClick() {
         delegate(GoToWelcomeContainerAction::class){goToWelcomeContainer(Bundle())}
     }

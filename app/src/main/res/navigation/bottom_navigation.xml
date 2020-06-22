@@ -9,7 +9,45 @@
         android:id="@+id/feed_screen"
         android:name="com.basecamp.android.core.main.feed.FeedScreen"
         android:label="FeedScreen"
-        tools:layout="@layout/screen_feed" />
+        tools:layout="@layout/screen_feed">
+        <action
+            android:id="@+id/action_feed_screen_to_addnew_screen"
+            app:destination="@id/addnew_screen" />
+
+        <action
+            android:id="@+id/action_feed_screen_to_newspreview_screen"
+            app:destination="@id/newspreview_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addnew_screen"
+        android:name="com.basecamp.android.core.main.feed.add.AddNewScreen"
+        android:label="AddNewScreen"
+        tools:layout="@layout/screen_addnew">
+
+        <argument
+            android:name="news_id"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_addnew_screen_to_cameragallery_dialog"
+            app:destination="@id/cameragallery_dialog" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/newspreview_screen"
+        android:name="com.basecamp.android.core.main.feed.preview.NewsPreviewScreen"
+        android:label="NewsPreviewScreen"
+        tools:layout="@layout/screen_newspreview">
+
+        <argument
+            android:name="news"
+            app:argType="com.basecamp.android.domain.models.News"
+            app:nullable="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/profile_screen"

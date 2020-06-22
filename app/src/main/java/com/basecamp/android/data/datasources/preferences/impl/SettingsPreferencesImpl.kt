@@ -13,11 +13,16 @@ internal class SettingsPreferencesImpl(ctx: Context) : Preferences(ctx, "Setting
         const val CAN_ENABLE_DARK_MODE = "CAN_ENABLE_DARK_MODE"
         const val DARK_MODE = "DARK_MODE"
         const val EMAIL = "EMAIL"
+        const val CAN_WRITE = "CAN_WRITE"
     }
 
     override fun setEmail(email: String) = putString(EMAIL, email)
 
     override fun getEmail() : String? = getString(EMAIL, "").takeIf { it != "" }
+
+    override fun setCanWrite(canWrite: Boolean) = putBoolean(CAN_WRITE, canWrite)
+
+    override fun getCanWrite() : Boolean = getBoolean(CAN_WRITE,false)
 
     override fun setCanEnableDarkMode(canEnableDarkMode: Boolean) = putBoolean(CAN_ENABLE_DARK_MODE, canEnableDarkMode)
 

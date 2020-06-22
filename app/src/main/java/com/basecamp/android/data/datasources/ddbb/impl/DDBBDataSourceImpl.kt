@@ -7,9 +7,13 @@ import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.common.extensions.safeCall
 import com.basecamp.android.data.datasources.ResponseState
+import com.basecamp.android.data.datasources.ddbb.mappers.NewsMapper
+import com.basecamp.android.data.datasources.ddbb.models.NewsDTO
 import com.basecamp.android.data.repositories.datasources.DDBBDataSource
+import com.basecamp.android.domain.models.News
 import com.basecamp.android.domain.models.User
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -21,8 +25,12 @@ import kotlin.coroutines.suspendCoroutine
 @Injectable(Scope.BY_USE)
 class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
 
+
+    private val newsMapper = NewsMapper()
+
     companion object {
         const val USERS = "users"
+        const val NEWS = "news"
     }
 
     override suspend fun createUser(email: String, user: User) =
@@ -69,6 +77,107 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
 
         }
 
+    override suspend fun createNews(news: News): ResponseState<News> =
+        safeCall {
+            suspendCoroutine<News> { cont ->
+                auth.collection(NEWS)
+                    .add(newsMapper.map(news))
+                    .addOnSuccessListener {
+                        cont.resume(
+                            News(it.id,
+                                title = news.title,
+                                text = news.text,
+                                author = news.author,
+                                timestamp = news.timestamp,
+                                mafia = news.mafia,
+                                picture = news.picture))
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun updateNews(news: News): ResponseState<Void> =
+        safeCall {
+            suspendCoroutine<Void> { cont ->
+                news.id?.let {
+                    auth.collection(NEWS)
+                        .document(it)
+                        .update(newsMapper.map(news).convert())
+                        .addOnSuccessListener {
+                            cont.resume(it)
+                        }
+                        .addOnFailureListener { error -> cont.resumeWithException(error) }
+                } ?: cont.resumeWithException(Throwable("Error updating the news"))
+            }
+
+        }
+
+    override suspend fun deleteNews(id: String): ResponseState<Void> =
+        safeCall {
+            suspendCoroutine<Void> { cont ->
+                auth.collection(NEWS)
+                    .document(id)
+                    .delete()
+                    .addOnSuccessListener {
+                        cont.resume(it)
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getNews(id: String): ResponseState<News> =
+        safeCall {
+            suspendCoroutine<News> { cont ->
+                auth.collection(NEWS)
+                    .document(id)
+                    .get()
+                    .addOnSuccessListener {
+                        it.toObject(NewsDTO::class.java)?.let { news ->
+                            cont.resume(newsMapper.map(news, id))
+                        } ?: cont.resumeWithException(Throwable("Error converting to the User object"))
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getAllNews(): ResponseState<List<News>> =
+        safeCall {
+            suspendCoroutine<List<News>> { cont ->
+                auth.collection(NEWS)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getNews()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getNormalNews(): ResponseState<List<News>> =
+        safeCall {
+            suspendCoroutine<List<News>> { cont ->
+                auth.collection(NEWS)
+                    .whereEqualTo("mafia", false)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getNews()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getMafiaNews(): ResponseState<List<News>> =
+        safeCall {
+            suspendCoroutine<List<News>> { cont ->
+                auth.collection(NEWS)
+                    .whereEqualTo("mafia", true)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getNews()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    private fun QuerySnapshot.getNews(): List<News> =
+        documents.mapNotNull {doc ->
+            doc.toObject(NewsDTO::class.java)?.let { news ->
+                newsMapper.map(news, doc.id)
+            }
+        }
 
     override suspend fun uploadImage(src: String, name: String): ResponseState<String> =
         safeCall {
@@ -95,7 +204,6 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
             }
         }
 
-
     override suspend fun deleteImage(name: String): ResponseState<Void> =
         safeCall {
             suspendCoroutine<Void> { cont ->
@@ -106,7 +214,7 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
                     }
                     .addOnFailureListener {
                         cont.resumeWithException(it)
-                        Log.i("CRIS","EXCEPTION DELETING $it")
+                        Log.i("CRIS", "EXCEPTION DELETING $it")
                     }
             }
         }
