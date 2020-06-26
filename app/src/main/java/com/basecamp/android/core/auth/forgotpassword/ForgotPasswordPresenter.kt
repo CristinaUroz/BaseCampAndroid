@@ -15,6 +15,11 @@ class ForgotPasswordPresenter (private val forgotPassowrdUseCase: ForgotPassowrd
     private val errorHandler = CoroutineExceptionHandler { _, _ -> }
     private val coroutineScope = CoroutineScope(job + Dispatchers.Main + errorHandler)
 
+
+    //val coroutineContext: CoroutineContext = SupervisorJoib() + errorHandler + Dispatchers.Main
+    //Implementar CoroutineScope
+//ContentLoadingProgressBar
+
     override fun getPageName(): String = "ForgotPassword"
 
     override fun init(bundle: Bundle) {}

@@ -1,12 +1,10 @@
 package com.basecamp.android.core.main.feed
 
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,6 +12,7 @@ import com.basecamp.android.R
 import com.basecamp.android.core.Screen
 import com.basecamp.android.core.main.feed.adapters.NewsRecyclerViewAdapter
 import com.basecamp.android.domain.models.News
+import java.util.*
 import kotlin.reflect.KClass
 
 class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Router {
@@ -24,7 +23,6 @@ class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Rout
     private val progressBar by lazy { findViewById<ProgressBar>(R.id.screen_feed_list_progress_bar) }
     private val swipeRefreshLayout by lazy { findViewById<SwipeRefreshLayout>(R.id.screen_feed_list_swipe_refresh_layout) }
     private val addButton by lazy { findViewById<ImageView>(R.id.screen_feed_add_button) }
-    private var whenScroll = {}
 
 
     override fun getLayout(): Int = R.layout.screen_feed
@@ -35,11 +33,6 @@ class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Rout
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsRecyclerViewAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    whenScroll.invoke()
-                }
-            })
         }
         newsRecyclerViewAdapter.apply {
             setOnEditClickListener {
@@ -63,7 +56,7 @@ class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Rout
     }
 
     override fun setInformation(list: List<News>) {
-        newsRecyclerViewAdapter.setData(list.sortedByDescending { it.timestamp })
+        newsRecyclerViewAdapter.setData(list.filter { it.timestamp <= Date().time }.sortedByDescending { it.timestamp })
         recyclerView.visibility = View.VISIBLE
         setProgressDialog(false)
         if (list.isNotEmpty()) {
@@ -85,11 +78,6 @@ class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Rout
 
     override fun setRefreshing(refreshing: Boolean){
         swipeRefreshLayout.isRefreshing = refreshing
-    }
-
-    fun getFirstVisibleItemPosition(): Int {
-        return if (recyclerView.visibility == FrameLayout.GONE || recyclerView.size == 0) 0
-        else (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
     override fun setError(lambda: () -> Unit) {

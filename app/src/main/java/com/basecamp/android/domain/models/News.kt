@@ -2,6 +2,7 @@ package com.basecamp.android.domain.models
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.util.*
 
 data class News(
 
@@ -18,7 +19,7 @@ data class News(
     var author: Int? = null,
 
     @SerializedName("timestamp")
-    var timestamp: Long? = null,
+    var timestamp: Long = Date().time,
 
     @SerializedName("mafia")
     var mafia: Boolean = false,

@@ -37,6 +37,7 @@
     </fragment>
 
 
+
     <fragment
         android:id="@+id/newspreview_screen"
         android:name="com.basecamp.android.core.main.feed.preview.NewsPreviewScreen"
@@ -46,6 +47,18 @@
         <argument
             android:name="news"
             app:argType="com.basecamp.android.domain.models.News"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/user_screen"
+        android:name="com.basecamp.android.core.main.info.user.UserScreen"
+        android:label="UserScreen"
+        tools:layout="@layout/screen_profile">
+
+        <argument
+            android:name="user"
+            app:argType="com.basecamp.android.domain.models.User"
             app:nullable="false" />
     </fragment>
 
@@ -63,7 +76,56 @@
         android:id="@+id/info_screen"
         android:name="com.basecamp.android.core.main.info.InfoScreen"
         android:label="InfoScreen"
-        tools:layout="@layout/screen_info" />
+        tools:layout="@layout/screen_info" >
+
+        <action
+            android:id="@+id/action_info_screen_to_addinfo_screen"
+            app:destination="@id/addinfo_screen" />
+
+
+        <action
+            android:id="@+id/action_info_screen_to_participants_screen"
+            app:destination="@id/participants_screen" />
+
+        <action
+            android:id="@+id/action_info_screen_to_families_screen"
+            app:destination="@id/families_screen" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/addinfo_screen"
+        android:name="com.basecamp.android.core.main.info.add.AddInfoScreen"
+        android:label="AddInfoScreen"
+        tools:layout="@layout/screen_addinfo">
+
+        <argument
+            android:name="news_id"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/participants_screen"
+        android:name="com.basecamp.android.core.main.info.participants.ParticipantsScreen"
+        android:label="ParticipantsScreen"
+        tools:layout="@layout/screen_participants">
+        <action
+            android:id="@+id/action_participants_screen_to_user_screen"
+            app:destination="@id/user_screen"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/families_screen"
+        android:name="com.basecamp.android.core.main.info.families.FamiliesScreen"
+        android:label="FamiliesScreen"
+        tools:layout="@layout/screen_families"/>
 
     <fragment
         android:id="@+id/editprofile_dialog"

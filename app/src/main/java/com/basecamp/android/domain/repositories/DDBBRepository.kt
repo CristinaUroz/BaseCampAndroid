@@ -1,14 +1,22 @@
 package com.basecamp.android.domain.repositories
 
 import com.basecamp.android.data.datasources.ResponseState
-import com.basecamp.android.domain.models.News
-import com.basecamp.android.domain.models.User
+import com.basecamp.android.domain.models.*
 
 interface DDBBRepository {
 
     suspend fun getUser(email: String): ResponseState<User>
 
     suspend fun updateUser(user: User): ResponseState<Void>
+
+    suspend fun getAllUsers(): ResponseState<List<User>>
+
+
+    suspend fun getFamilies(): ResponseState<List<Family>>
+
+
+    suspend fun getMafiaWelcome(): ResponseState<MafiaWelcome>
+
 
     suspend fun createNews(news: News): ResponseState<News>
 
@@ -23,4 +31,22 @@ interface DDBBRepository {
     suspend fun getNormalNews(): ResponseState<List<News>>
 
     suspend fun getMafiaNews(): ResponseState<List<News>>
+
+
+    suspend fun createInfo(info: Info): ResponseState<Info>
+
+    suspend fun updateInfo(info: Info): ResponseState<Void>
+
+    suspend fun deleteInfo(id: String): ResponseState<Void>
+
+    suspend fun getInfo(id: String): ResponseState<Info>
+
+    suspend fun getAllInfo(): ResponseState<List<Info>>
+
+    suspend fun getNormalInfo(): ResponseState<List<Info>>
+
+    suspend fun getMafiaInfo(): ResponseState<List<Info>>
+
+
+
 }

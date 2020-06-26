@@ -7,11 +7,12 @@ import cc.popkorn.annotations.Injectable
 import cc.popkorn.core.Scope
 import com.basecamp.android.core.common.extensions.safeCall
 import com.basecamp.android.data.datasources.ResponseState
+import com.basecamp.android.data.datasources.ddbb.mappers.InfoMapper
 import com.basecamp.android.data.datasources.ddbb.mappers.NewsMapper
+import com.basecamp.android.data.datasources.ddbb.models.InfoDTO
 import com.basecamp.android.data.datasources.ddbb.models.NewsDTO
 import com.basecamp.android.data.repositories.datasources.DDBBDataSource
-import com.basecamp.android.domain.models.News
-import com.basecamp.android.domain.models.User
+import com.basecamp.android.domain.models.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
@@ -27,10 +28,14 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
 
 
     private val newsMapper = NewsMapper()
+    private val infoMapper = InfoMapper()
 
     companion object {
         const val USERS = "users"
+        const val FAMILIES = "families"
+        const val MAFIA = "mafia"
         const val NEWS = "news"
+        const val INFO = "info"
     }
 
     override suspend fun createUser(email: String, user: User) =
@@ -77,6 +82,50 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
 
         }
 
+
+    override suspend fun getAllUsers(): ResponseState<List<User>> =
+        safeCall {
+            suspendCoroutine<List<User>> { cont ->
+                auth.collection(USERS)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        cont.resume(doc.mapNotNull { it.toObject(User::class.java) })
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+
+
+    override suspend fun getFamilies(): ResponseState<List<Family>> =
+        safeCall {
+            suspendCoroutine<List<Family>> { cont ->
+                auth.collection(FAMILIES)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        cont.resume(doc.mapNotNull { it.toObject(Family::class.java) })
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+
+    override suspend fun getMafiaWelcome(): ResponseState<MafiaWelcome> =
+        safeCall {
+            suspendCoroutine<MafiaWelcome> { cont ->
+                auth.collection(MAFIA)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        doc.first().toObject(MafiaWelcome::class.java).let{
+                            cont.resume(it)
+                        }
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+
+
     override suspend fun createNews(news: News): ResponseState<News> =
         safeCall {
             suspendCoroutine<News> { cont ->
@@ -84,13 +133,16 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
                     .add(newsMapper.map(news))
                     .addOnSuccessListener {
                         cont.resume(
-                            News(it.id,
+                            News(
+                                it.id,
                                 title = news.title,
                                 text = news.text,
                                 author = news.author,
                                 timestamp = news.timestamp,
                                 mafia = news.mafia,
-                                picture = news.picture))
+                                picture = news.picture
+                            )
+                        )
                     }
                     .addOnFailureListener { error -> cont.resumeWithException(error) }
             }
@@ -173,7 +225,7 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
         }
 
     private fun QuerySnapshot.getNews(): List<News> =
-        documents.mapNotNull {doc ->
+        documents.mapNotNull { doc ->
             doc.toObject(NewsDTO::class.java)?.let { news ->
                 newsMapper.map(news, doc.id)
             }
@@ -219,6 +271,108 @@ class DDBBDataSourceImpl(private val auth: FirebaseFirestore) : DDBBDataSource {
             }
         }
 
+    override suspend fun createInfo(info: Info): ResponseState<Info> =
+        safeCall {
+            suspendCoroutine<Info> { cont ->
+                auth.collection(INFO)
+                    .add(infoMapper.map(info))
+                    .addOnSuccessListener {
+                        cont.resume(
+                            Info(
+                                it.id,
+                                title = info.title,
+                                text = info.text,
+                                mafia = info.mafia
+                            )
+                        )
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun updateInfo(info: Info): ResponseState<Void> =
+        safeCall {
+            suspendCoroutine<Void> { cont ->
+                info.id?.let {
+                    auth.collection(INFO)
+                        .document(it)
+                        .update(infoMapper.map(info).convert())
+                        .addOnSuccessListener {
+                            cont.resume(it)
+                        }
+                        .addOnFailureListener { error -> cont.resumeWithException(error) }
+                } ?: cont.resumeWithException(Throwable("Error updating the information"))
+            }
+
+        }
+
+    override suspend fun deleteInfo(id: String): ResponseState<Void> =
+        safeCall {
+            suspendCoroutine<Void> { cont ->
+                auth.collection(INFO)
+                    .document(id)
+                    .delete()
+                    .addOnSuccessListener {
+                        cont.resume(it)
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getInfo(id: String): ResponseState<Info> =
+        safeCall {
+            suspendCoroutine<Info> { cont ->
+                auth.collection(INFO)
+                    .document(id)
+                    .get()
+                    .addOnSuccessListener {
+                        it.toObject(InfoDTO::class.java)?.let {
+                            cont.resume(infoMapper.map(it, id))
+                        } ?: cont.resumeWithException(Exception("Error parsing Info"))
+                    }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getAllInfo(): ResponseState<List<Info>> =
+        safeCall {
+            suspendCoroutine<List<Info>> { cont ->
+                auth.collection(INFO)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getInfo()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getNormalInfo(): ResponseState<List<Info>> =
+        safeCall {
+            suspendCoroutine<List<Info>> { cont ->
+                auth.collection(INFO)
+                    .whereEqualTo("mafia", false)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getInfo()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+    override suspend fun getMafiaInfo(): ResponseState<List<Info>> =
+        safeCall {
+            suspendCoroutine<List<Info>> { cont ->
+                auth.collection(INFO)
+                    .whereEqualTo("mafia", true)
+                    .get()
+                    .addOnSuccessListener { cont.resume(it.getInfo()) }
+                    .addOnFailureListener { error -> cont.resumeWithException(error) }
+            }
+        }
+
+
+    private fun QuerySnapshot.getInfo(): List<Info> =
+        documents.mapNotNull { doc ->
+            doc.toObject(InfoDTO::class.java)?.let {
+                infoMapper.map(it, doc.id)
+            }
+        }
 
     val gson = Gson()
 

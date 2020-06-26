@@ -24,7 +24,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/navigationTabsBackground"/>
+        android:background="@color/navigationTabsBackground" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,6 +38,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingStart="24dp"
@@ -49,6 +50,7 @@
                     android:id="@+id/screen_profile_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:visibility="gone">
@@ -64,7 +66,6 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="8dp"
                         android:gravity="center_vertical"
-                        android:src="@drawable/edit"
                         android:text="@string/something_went_wrong"
                         android:textColor="@color/errorColor" />
 
@@ -74,6 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
+                    android:animateLayoutChanges="true"
                     android:orientation="horizontal">
 
                     <ProgressBar
@@ -108,6 +110,7 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center"
                     android:lines="1"
+                    android:textIsSelectable="true"
                     android:textColor="@color/textColor"
                     android:textSize="32sp"
                     android:textStyle="bold"
@@ -122,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:alpha="0.7"
+                    android:textIsSelectable="true"
                     android:gravity="center"
                     android:textColor="@color/textColor"
                     android:textSize="12sp"
@@ -133,6 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
+                    android:textIsSelectable="true"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
                     tools:text="Descripcion" />

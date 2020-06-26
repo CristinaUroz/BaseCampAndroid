@@ -24,4 +24,7 @@
     <drawable name="add">@drawable/ic_add</drawable>
     <drawable name="tick">@drawable/ic_tick</drawable>
 
+    <drawable name="swipe_point_light">@drawable/swipe_point_l</drawable>
+    <drawable name="swipe_point_dark">@drawable/swipe_point_d</drawable>
+
 </resources>

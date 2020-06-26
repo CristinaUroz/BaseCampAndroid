@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:background="@color/navigationTabsBackground"
     android:orientation="vertical"
     android:paddingBottom="4dp">
@@ -27,7 +28,6 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
-
             tools:src="@drawable/default_profile" />
 
         <TextView
@@ -35,10 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:textColor="@color/textColor"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginEnd="12dp"
             tools:text="TITOL DE LA NOTICIA" />
 
         <TextView
@@ -46,11 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
-            android:textColor="@color/disabledBackground"
-            android:textSize="12sp"
-            android:textAlignment="textEnd"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/disabledBackground"
+            android:textSize="12sp"
             tools:text="TITOL DE LA NOTICIA" />
 
     </LinearLayout>
@@ -62,8 +62,8 @@
         android:layout_gravity="end"
         android:layout_margin="12dp"
         android:background="@drawable/button_transparent_background"
-        android:padding="8dp"
         android:elevation="4dp"
+        android:padding="8dp"
         android:src="@drawable/edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,12 +72,12 @@
         android:id="@+id/view_news_item_list_user_picture"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        tools:src="@drawable/default_profile"
-        android:elevation="4dp"
         android:layout_margin="12dp"
+        android:background="@drawable/button_black_background"
+        android:elevation="4dp"
+        android:padding="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="6dp"
-        android:background="@drawable/button_black_background"/>
+        tools:src="@drawable/default_profile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,7 @@ class NewsPreviewScreen : Screen<NewsPreviewPresenter>(), NewsPreviewContract.Vi
     override fun getPresenter(): KClass<NewsPreviewPresenter> = NewsPreviewPresenter::class
 
     override fun init() {
+        ///android:textIsSelectable="true"
         text.movementMethod = LinkMovementMethod.getInstance()
         setNews(data.news)
     }
@@ -39,7 +40,7 @@ class NewsPreviewScreen : Screen<NewsPreviewPresenter>(), NewsPreviewContract.Vi
     private fun setNews(news: News) {
         title.text = news.title
         text.text = news.text
-        date.text = news.timestamp?.let{convertTimestampToDate(it)} ?: ""
+        date.text = news.timestamp.let{convertTimestampToDate(it)}
         Linkify.addLinks(text, Linkify.WEB_URLS)
         if (news.mafia && news.author != null) {
             authorLayout.visibility = View.VISIBLE

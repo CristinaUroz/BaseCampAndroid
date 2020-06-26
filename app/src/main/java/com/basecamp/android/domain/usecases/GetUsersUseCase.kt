@@ -12,4 +12,6 @@ class GetUsersUseCase(private val ddbbRepository: DDBBRepository) : UseCase {
 
     suspend fun getUser(email: String): ResponseState<User> = ddbbRepository.getUser(email)
 
+    suspend fun getAllUsers(): ResponseState<List<User>> = ddbbRepository.getAllUsers()
+
 }

@@ -1,4 +1,4 @@
-package com.basecamp.android.core.main.feed
+package com.basecamp.android.core.main.feed.views
 
 import android.content.Context
 import android.util.AttributeSet

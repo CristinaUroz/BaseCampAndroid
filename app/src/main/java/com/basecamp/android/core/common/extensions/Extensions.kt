@@ -3,6 +3,7 @@ package com.basecamp.android.core.common.extensions
 import android.app.Activity
 import android.content.Context
 import android.text.format.DateFormat
+import android.util.DisplayMetrics
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -66,6 +67,10 @@ fun Int.getGroupLogo(): Int {
     }
 }
 
+
+fun Context.convertDpToPixel(dp: Float): Float {
+    return dp * (this.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+}
 
 fun convertTimestampToDate(timestamp: Long): String =
     DateFormat.format("EEEE, dd MMMM yyyy", Calendar.getInstance().apply {

@@ -93,7 +93,6 @@ abstract class Screen<P : Presenter<*, *>> : BundleFragment(), BaseContract.View
         }
     }
 
-
 }
 
 

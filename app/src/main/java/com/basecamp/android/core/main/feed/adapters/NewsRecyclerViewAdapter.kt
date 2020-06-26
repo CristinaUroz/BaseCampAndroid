@@ -3,7 +3,7 @@ package com.basecamp.android.core.main.feed.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cc.popkorn.inject
-import com.basecamp.android.core.main.feed.NewsListItemView
+import com.basecamp.android.core.main.feed.views.NewsListItemView
 import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 import com.basecamp.android.domain.models.News
 

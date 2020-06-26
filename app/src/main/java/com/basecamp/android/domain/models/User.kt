@@ -1,6 +1,7 @@
 package com.basecamp.android.domain.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class User(
 
@@ -8,7 +9,7 @@ data class User(
     var name: String? = null,
 
     @SerializedName("email")
-    var email: String? = null,
+    var email: String = "",
 
     @SerializedName("image")
     var image: String? = null,
@@ -30,4 +31,5 @@ data class User(
 
     @SerializedName("adult")
     var adult: Boolean? = null
-)
+
+) : Serializable

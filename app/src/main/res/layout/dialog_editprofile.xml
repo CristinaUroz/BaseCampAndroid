@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     android:fitsSystemWindows="true">
 
     <ScrollView
@@ -131,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:ems="10"
-                    android:hint="@string/Name"
+                    android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:maxLength="60"
                     android:textColor="@color/textColor"

@@ -1,6 +1,7 @@
 package com.basecamp.android.core.main.profile
 
-import android.util.Log
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,7 +35,6 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
     override fun getPresenter(): KClass<ProfilePresenter> = ProfilePresenter::class
 
     override fun init() {
-        Log.i("CRIS", "init")
         logOutButton.setOnClickListener {
             notify { onLogOutClick() }
         }
@@ -42,6 +42,9 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
         editView.setOnClickListener {
             navigate(ProfileScreenDirections.actionProfileScreenToEditprofileDialog())
         }
+
+        descriptionTextView.movementMethod = LinkMovementMethod.getInstance()
+
     }
 
     override fun showProgressBar(b: Boolean) {
@@ -58,6 +61,7 @@ class ProfileScreen : Screen<ProfilePresenter>(), ProfileContract.View, ProfileC
 
     override fun setDescription(description: String) {
         descriptionTextView.text = description
+        Linkify.addLinks(descriptionTextView, Linkify.WEB_URLS)
     }
 
     override fun setEmail(email: String) {
