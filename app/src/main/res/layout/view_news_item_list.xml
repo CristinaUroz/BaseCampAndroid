@@ -9,7 +9,18 @@
     android:orientation="vertical"
     android:paddingBottom="4dp">
 
+    <FrameLayout
+        android:id="@+id/view_news_item_list_pending_foreground"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#88ffffff"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fragmentBackground"
@@ -50,6 +61,18 @@
             android:layout_marginEnd="12dp"
             android:textAlignment="textEnd"
             android:textColor="@color/disabledBackground"
+            android:textSize="12sp"
+            tools:text="TITOL DE LA NOTICIA" />
+
+        <TextView
+            android:id="@+id/view_news_item_list_future_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/errorColor"
             android:textSize="12sp"
             tools:text="TITOL DE LA NOTICIA" />
 

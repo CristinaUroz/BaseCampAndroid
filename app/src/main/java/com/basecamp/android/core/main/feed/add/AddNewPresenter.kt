@@ -11,7 +11,6 @@ import com.basecamp.android.domain.models.News
 import com.basecamp.android.domain.usecases.GetNewsUseCase
 import com.basecamp.android.domain.usecases.UpdateNewsUseCase
 import kotlinx.coroutines.*
-import java.util.*
 
 @Injectable(Scope.BY_NEW)
 class AddNewPresenter(
@@ -55,12 +54,12 @@ class AddNewPresenter(
         }
     }
 
-    override fun onSaveClick(picture: String?, title: String, text: String, author: Int?) {
+    override fun onSaveClick(picture: String?, title: String, text: String, author: Int?, ts: Long) {
         news.apply {
             this.title = title
             this.text = text
             this.author = author
-            if (timestamp == null) timestamp = Date().time
+            this.timestamp = ts
             this.mafia = isDarkMode
             this.picture = picture
         }

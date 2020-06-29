@@ -10,6 +10,7 @@ import com.basecamp.android.data.repositories.datasources.SettingsPreferences
 import com.basecamp.android.domain.models.News
 import com.basecamp.android.domain.usecases.GetNewsUseCase
 import kotlinx.coroutines.*
+import java.util.*
 
 @Injectable(Scope.BY_NEW)
 class FeedPresenter(
@@ -60,7 +61,12 @@ class FeedPresenter(
             }
             news?.let { news_list ->
                 news_list.takeIf { news_list.isNotEmpty() }?.let {
-                    draw { setInformation(it) }
+                    draw {
+                        setInformation(it.apply {
+                            if (!settingsPreferences.getCanWrite())
+                                filter { it.timestamp <= Date().time }
+                        })
+                    }
                 } ?: draw { setEmpty() }
             } ?: draw { setError() }
             draw { setRefreshing(false) }

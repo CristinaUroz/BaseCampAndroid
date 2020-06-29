@@ -19,7 +19,7 @@ interface AddNewContract {
 
     interface Presenter : BaseContract.Presenter {
         fun getNews(id: String)
-        fun onSaveClick(picture: String?, title: String, text: String, author: Int?)
+        fun onSaveClick(picture: String?, title: String, text: String, author: Int?, timeStamp: Long)
         fun onDeleteClick()
     }
 

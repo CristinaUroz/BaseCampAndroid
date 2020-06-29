@@ -12,7 +12,6 @@ import com.basecamp.android.R
 import com.basecamp.android.core.Screen
 import com.basecamp.android.core.main.feed.adapters.NewsRecyclerViewAdapter
 import com.basecamp.android.domain.models.News
-import java.util.*
 import kotlin.reflect.KClass
 
 class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Router {
@@ -56,7 +55,7 @@ class FeedScreen : Screen<FeedPresenter>(), FeedContract.View, FeedContract.Rout
     }
 
     override fun setInformation(list: List<News>) {
-        newsRecyclerViewAdapter.setData(list.filter { it.timestamp <= Date().time }.sortedByDescending { it.timestamp })
+        newsRecyclerViewAdapter.setData(list.sortedByDescending { it.timestamp })
         recyclerView.visibility = View.VISIBLE
         setProgressDialog(false)
         if (list.isNotEmpty()) {

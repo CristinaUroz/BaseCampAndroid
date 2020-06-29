@@ -1,6 +1,8 @@
 package com.basecamp.android.core.main.feed.add
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -17,6 +19,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.reflect.KClass
 
 class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContract.Router {
@@ -30,12 +34,20 @@ class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContr
     private val addPictureButton by lazy { findViewById<ImageView>(R.id.screen_addnew_add_cover_picture) }
     private val titleField by lazy { findViewById<TextInputEditText>(R.id.screen_addnew_title_field) }
     private val textField by lazy { findViewById<TextInputEditText>(R.id.screen_addnew_text_field) }
+    private val dateField by lazy { findViewById<TextInputEditText>(R.id.screen_addnew_date_field) }
+    private val timeField by lazy { findViewById<TextInputEditText>(R.id.screen_addnew_time_field) }
     private val authorSpinner by lazy { findViewById<Spinner>(R.id.screen_addnew_author_spinner) }
     private val errorText by lazy { findViewById<TextView>(R.id.screen_addnew_error_text) }
     private val title by lazy { findViewById<TextView>(R.id.screen_addnew_title) }
     private val saveButton by lazy { findViewById<Button>(R.id.screen_addnew_save_button) }
     private val saveProgressBar by lazy { findViewById<ProgressBar>(R.id.screen_addnew_button_progressbar) }
     private var picture: String? = null
+
+    private var cal = Calendar.getInstance()
+
+
+    private val sdf = SimpleDateFormat("dd MMMM yyy", Locale.getDefault())
+    private val shf = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     override fun getLayout(): Int = R.layout.screen_addnew
 
@@ -64,7 +76,7 @@ class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContr
             errorText.text = ""
             save()
         }
-        deletePictureButton.setOnClickListener {deletePicture()}
+        deletePictureButton.setOnClickListener { deletePicture() }
         addPictureButton.setOnClickListener {
             navigate(AddNewScreenDirections.actionAddnewScreenToCameragalleryDialog(), NAV_REQUEST_CODE)
         }
@@ -83,6 +95,35 @@ class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContr
                 .setIcon(context?.getDrawable(R.drawable.error))
                 .show()
         }
+
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.apply {
+                set(Calendar.YEAR, year)
+                set(Calendar.MONTH, monthOfYear)
+                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            }
+            dateField.setText(sdf.format(cal.time))
+        }
+
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour,  minute->
+            cal.apply {
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, minute)
+            }
+
+            timeField.setText(shf.format(cal.time))
+        }
+
+        context?.let { ctx ->
+            dateField.setOnClickListener {
+                DatePickerDialog(ctx, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
+            }
+
+            timeField.setOnClickListener {
+                TimePickerDialog(ctx, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),true).show()
+            }
+        }
+
     }
 
     override fun darkVersion(b: Boolean) {
@@ -90,7 +131,7 @@ class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContr
     }
 
     private fun save() {
-        notify { onSaveClick(picture, titleField.text.toString(), textField.text.toString(), authorSpinner.selectedItemPosition) }
+        notify { onSaveClick(picture, titleField.text.toString(), textField.text.toString(), authorSpinner.selectedItemPosition.takeIf { it != 0 }, cal.timeInMillis) }
     }
 
     override fun showProgressBar(b: Boolean) {
@@ -108,7 +149,12 @@ class AddNewScreen : Screen<AddNewPresenter>(), AddNewContract.View, AddNewContr
         news.picture?.takeIf { it != "" }?.let { addPicture(it) }
         news.title?.let { titleField.setText(it) }
         news.text?.let { textField.setText(it) }
-        news.author?.let{authorSpinner.setSelection(it)}
+        news.author?.let { authorSpinner.setSelection(it) }
+        news.timestamp.let {
+            dateField.setText(sdf.format(it))
+            timeField.setText(shf.format(it))
+            cal.timeInMillis = it
+        }
     }
 
     private fun addPicture(picture: String) {

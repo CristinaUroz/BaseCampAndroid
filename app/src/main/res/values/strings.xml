@@ -48,4 +48,8 @@
     <string name="delete_news">Delete News</string>
     <string name="delete_info">Delete Information</string>
     <string name="version">Version</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="news_will_be_published">These news will be published on %1$s</string>
+
 </resources>
